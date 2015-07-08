@@ -1,0 +1,9 @@
+power budget:
+
+- radio: 50ma
+- nunchuck: 0.6 + 1ma per button
+- arduino: 50ma
+
+~ 105 ma
+
+8 hrs... 840 + 280 = ~1.2ah
