@@ -5,47 +5,48 @@
 #include "Radio.h"
 #include "Voltmeter.h"
 #include "LCD.h"
+#include "ModelRegistry.h"
 
-WiiChuck chuck = WiiChuck();
-Voltmeter vmeter = Voltmeter(A1, 100000.0, 30000.0);
+WiiChuck chuck;
+Voltmeter vmeter(A1, 100000.0, 30000.0);
 
-// reta
-float transform[2][4] = {{0,0.5,0,0.5},{0,-0.5,0,0.5}};
-Model bee = {
-  "bee",
-  (float[]){0,0.3,0,0.3},
-  (float[]){0.8,0.8},
-  (float[]){1,1},
-  (float*)transform,
-  2,
-  4
-};
-
-Radio *radio;
+Radio radio(5);
 float inputs[4];
 
-LCD *lcd;
+LCD lcd;
+ModelRegistry registry;
+
+bool zPressed, cPressed;
 
 int counter = 0;
+long lastM = -1000;
+long lastZ = -1000;
+long lastC = -1000;
+long currentTime = 0;
+
+bool mode2 = true;
+
+void setModel(Model *m) {
+  radio.setModel(m);
+  lcd.setChannels(radio.getChannels(), m->numChannels);
+  lcd.setModelName(m->name);
+  lcd.setRssi(0);
+  lcd.setInputs(inputs, m->numInputs);
+}
 
 void setup() {
-
-  //  Serial.begin(9600);
-
-  lcd = new LCD();
+  lcd.begin();
   delay(500);
 
-  lcd->setModelName(bee.name);
-  lcd->setRssi(0);
-  lcd->setInputs(inputs, bee.numInputs);
+  radio.begin();
 
-  radio = new Radio(5);
-  radio->setModel(&bee);
-  lcd->setChannels(radio->getChannels(), bee.numChannels);
+  registry.begin();
+  setModel(registry.current());
 
-  //  chuck.calibrateJoy();
   chuck.begin();
   chuck.update();
+
+  vmeter.begin();
 }
 
 void normalize(float *x, int n) {
@@ -55,27 +56,78 @@ void normalize(float *x, int n) {
   }
 }
 
+void setInputs() {
+  chuck.update();
+  if (mode2) {
+    inputs[0] = chuck.readJoyX()/100.0;
+    inputs[1] = chuck.readPitch()/90.0 - 1;
+    inputs[2] = chuck.readJoyY()/100.0;
+    inputs[3] = chuck.readRoll()/90.0;
+  } else {
+    inputs[3] = chuck.readJoyX()/100.0;
+    inputs[2] = chuck.readPitch()/90.0 - 1;
+    inputs[1] = chuck.readJoyY()/100.0;
+    inputs[0] = chuck.readRoll()/90.0;
+  }
+  normalize(inputs, 4);
+}
+
+void handleButtons() {
+  zPressed = chuck.zPressed();
+  cPressed = chuck.cPressed();
+
+  if (zPressed) {
+    lastZ = currentTime;
+  }
+
+  if (cPressed) {
+    lastC = currentTime;
+  }
+
+  if (zPressed && cPressed) {
+    if (currentTime - lastM > 500) {
+      if (inputs[mode2 ? 2 : 1] < -0.7) {
+        lastM = currentTime;
+        setModel(registry.next());
+      } else if (inputs[mode2 ? 2 : 1] > 0.7) {
+        lastM = currentTime;
+        setModel(registry.previous());
+      }
+    }
+  }
+
+  if (lastZ - currentTime > 100
+      && lastZ - currentTime < 200
+      && lastC - currentTime > 200) {
+    lastZ = -1000;
+    mode2 = !mode2;
+  }
+
+  if (lastC - currentTime > 100
+      && lastC - currentTime > 100
+      && lastZ - currentTime > 200) {
+    lastC = -1000;
+    radio.setTrim(inputs, registry.current()->numInputs);
+  }
+}
+
 void loop() {
   delay(50);
+  currentTime = millis();
   ++counter;
 
   if (counter % 20 == 0) {
     vmeter.update();
-    lcd->setVolts(vmeter.getVoltage());
+    lcd.setVolts(vmeter.getVoltage());
   }
 
-  chuck.update();
+  setInputs();
 
-  inputs[0] = chuck.readJoyX()/100.0;
-  inputs[1] = chuck.readPitch()/90.0 - 1;
-  inputs[2] = chuck.readJoyY()/100.0;
-  inputs[3] = chuck.readRoll()/90.0;
-  normalize(inputs, 4);
+  handleButtons();
 
-  radio->send(inputs);
-  float *channels = radio->getChannels();
+  radio.send(inputs);
 
   if (counter % 10 == 0) {
-    lcd->update();
+    lcd.update();
   }
 }

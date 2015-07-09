@@ -20,6 +20,10 @@ class Voltmeter {
     this->vin = 0;
   }
 
+  void begin() {
+    pinMode(pin, INPUT);
+  }
+
   void update() {
     float value = analogRead(pin);
     float vout = (value * 5.0) / 1024.0;

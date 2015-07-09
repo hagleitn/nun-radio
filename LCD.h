@@ -23,15 +23,15 @@ class LCD {
   float *channels;
   int numInputs;
   int numChannels;
-  Adafruit_SSD1306 *display;
+  Adafruit_SSD1306 display;
 
  public:
 
-  LCD() {
-    display = new Adafruit_SSD1306(OLED_RESET);
-    display->begin(SSD1306_SWITCHCAPVCC, 0x3C);
+   LCD() : display(OLED_RESET) {}
 
-    display->display();
+  void begin() {
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+    display.display();
   }
 
   void setVolts(float volts) {
@@ -66,45 +66,45 @@ class LCD {
   }
 
   void updateHeaders() {
-    display->print(this->volts);
-    display->print("V  ");
-    display->print(this->modelName);
-    display->print("  ");
-    display->print(rssi);
-    display->println("%");
+    display.print(this->volts);
+    display.print("V  ");
+    display.print(this->modelName);
+    display.print("  ");
+    display.print(rssi);
+    display.println("%");
   }
 
   void updateInputs() {
-    int width = (display->width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
-    int height = (display->height() - 24)/2;
+    int width = (display.width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
+    int height = (display.height() - 24)/2;
 
     for (int i = 0; i < numInputs; ++i) {
       int amp = (inputs[i]+1)*height +1;
-      display->fillRect(i*SPACE+i*width, display->height() - amp, width, amp, 1);
+      display.fillRect(i*SPACE+i*width, display.height() - amp, width, amp, 1);
     }
   }
 
   void updateChannels() {
-    int width = (display->width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
-    int height = (display->height() - 24)/2;
-    int offset = display->width()/2 + SEPARATOR;
+    int width = (display.width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
+    int height = (display.height() - 24)/2;
+    int offset = display.width()/2 + SEPARATOR;
 
     for (int i = 0; i < numChannels; ++i) {
       int amp = (channels[i]+1)*height +1;
-      display->fillRect(offset + i*SPACE + i*width, display->height() - amp, width, amp, 1);
+      display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
     }
   }
 
   void update() {
-    display->clearDisplay();
-    display->setCursor(0,0);
-    display->setTextSize(1);
-    display->setTextColor(WHITE);
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
 
     updateHeaders();
     updateInputs();
     updateChannels();
-    display->display();
+    display.display();
   }
 };
 

@@ -16,7 +16,10 @@ typedef struct model_ {
   float *drHigh;
   float *transform;
   int numChannels;
+  float *channels;
   int numInputs;
+  float *inputs;
+  float *trim;
 } Model;
 
 class Radio {
@@ -33,6 +36,9 @@ class Radio {
 
   Radio(int pin) {
     this->pin = pin;
+  }
+
+  void begin() {
     pinMode(pin, OUTPUT);
     encoderBegin(pin);
   }
@@ -40,21 +46,9 @@ class Radio {
   void setModel(Model *m) {
     this->model = m;
 
-    if (this->inputs != 0)  {
-      delete [] this->inputs;
-    }
-
-    if (channels !=0)  {
-      delete [] this->channels;
-    }
-
-    if (trim != 0) {
-      delete [] this->trim;
-    }
-
-    this->inputs = new float[this->model->numInputs];
-    this->channels = new float[this->model->numChannels];
-    this->trim = new float[this->model->numInputs];
+    this->channels = m->channels;
+    this->inputs = m->inputs;
+    this->trim = m->trim;
 
     init(this->inputs, this->model->numInputs, 0);
     init(this->channels, this->model->numChannels, 0);
@@ -140,7 +134,7 @@ class Radio {
     init(channels, m, 0);
     for (int j = 0; j < m; ++j)  {
       for (int i = 0; i < n; ++i) {
-	channels[j] = channels[j] + inputs[i] * transform[i+j*n];
+        channels[j] = channels[j] + inputs[i] * transform[i+j*n];
       }
     }
   }

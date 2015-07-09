@@ -11,41 +11,56 @@ class ModelRegistry {
 
   float elevon[2][4] = {{0,0.5,0,0.5},{0,-0.5,0,0.5}};
   float full[4][4] = {{0,0,0,1},{0,0,0,1},{0,1,0,0},{1,0,0,0}};
+  float input[4] = {};
+  float channels[4] = {};
+  float trim[4] = {};
+  float expo[4] = {0.3,0.3,0.3,0.3};
+  float drLow[4] = {0.8,0.8,0.8,0.8};
+  float drHigh[4] = {1,1,1,1};
 
   Model models[3] =
     {
       {
         "bee",
-        (float[]){0,0.3,0,0.3},
-        (float[]){0.8,0.8},
-        (float[]){1,1},
+        expo,
+        drLow,
+        drHigh,
         (float*)elevon,
         2,
-        4
+        channels,
+        4,
+        input,
+        trim
       },
       {
         "raptor",
-        (float[]){0,0.3,0,0.3},
-        (float[]){0.8,0.8},
-        (float[]){1,1},
+        expo,
+        drLow,
+        drHigh,
         (float*)elevon,
         2,
-        4
+        channels,
+        4,
+        input,
+        trim
       },
       {
         "libelle",
-        (float[]){0.3,0.3,0,0.3},
-        (float[]){0.8,0.8,0.8,0.8},
-        (float[]){1,1,1,1},
+        expo,
+        drLow,
+        drHigh,
         (float*)full,
         4,
-        4
-      },
+        channels,
+        4,
+        input,
+        trim
+      }
     };
 
  public:
 
-  ModelRegistry() {
+  void begin() {
     current_ = 0;
   }
 
@@ -54,7 +69,7 @@ class ModelRegistry {
   }
 
   Model *next() {
-    if(++current_ == num) {
+    if(++current_ >= num) {
       current_ = 0;
     }
     return &models[current_];
