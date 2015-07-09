@@ -10,7 +10,7 @@ WiiChuck chuck = WiiChuck();
 Voltmeter vmeter = Voltmeter(A1, 100000.0, 30000.0);
 
 // reta
-float transform[2][4] = {{0,0.5,0,0.5},{0,0.5,0,-0.5}};
+float transform[2][4] = {{0,0.5,0,0.5},{0,-0.5,0,0.5}};
 Model bee = {
   "bee",
   (float[]){0,0.3,0,0.3},
@@ -26,22 +26,26 @@ float inputs[4];
 
 LCD *lcd;
 
+int counter = 0;
+
 void setup() {
 
-  Serial.begin(9600);
-  Serial.println("I'm alive");
-
-  radio = new Radio(1);
-
-  chuck.begin();
-  radio->setModel(&bee);
-
-  //  chuck.calibrateJoy();
-  chuck.update();
+  //  Serial.begin(9600);
 
   lcd = new LCD();
+  delay(500);
+
   lcd->setModelName(bee.name);
   lcd->setRssi(0);
+  lcd->setInputs(inputs, bee.numInputs);
+
+  radio = new Radio(5);
+  radio->setModel(&bee);
+  lcd->setChannels(radio->getChannels(), bee.numChannels);
+
+  //  chuck.calibrateJoy();
+  chuck.begin();
+  chuck.update();
 }
 
 void normalize(float *x, int n) {
@@ -52,32 +56,15 @@ void normalize(float *x, int n) {
 }
 
 void loop() {
-  delay(200);
+  delay(50);
+  ++counter;
 
-  Serial.println("In loop");
-
-  vmeter.update();
-  lcd->setVolts(vmeter.getVoltage());
+  if (counter % 20 == 0) {
+    vmeter.update();
+    lcd->setVolts(vmeter.getVoltage());
+  }
 
   chuck.update();
-
-  /* Serial.print("Roll: "); */
-  /* Serial.print(chuck.readRoll()); */
-
-  /* Serial.print(", pitch:  "); */
-  /* Serial.println(chuck.readPitch()); */
-
-  /* Serial.print("z button: "); */
-  /* Serial.print((int)chuck.zPressed()); */
-
-  /* Serial.print(", c button: "); */
-  /* Serial.println((int)chuck.cPressed()); */
-
-  /* Serial.print("Joy (x): "); */
-  /* Serial.print((int)chuck.readJoyX()); */
-
-  /* Serial.print(", joy (y): "); */
-  /* Serial.println((int)chuck.readJoyY()); */
 
   inputs[0] = chuck.readJoyX()/100.0;
   inputs[1] = chuck.readPitch()/90.0 - 1;
@@ -85,16 +72,10 @@ void loop() {
   inputs[3] = chuck.readRoll()/90.0;
   normalize(inputs, 4);
 
-  for (int i = 0; i < 4; ++i) {
-      Serial.print("Input: ");
-      Serial.println(inputs[i]);
-  }
-  
   radio->send(inputs);
   float *channels = radio->getChannels();
 
-  lcd->setInputs(inputs,4);
-  lcd->setChannels(channels,2);
-
-  lcd->update();
+  if (counter % 10 == 0) {
+    lcd->update();
+  }
 }

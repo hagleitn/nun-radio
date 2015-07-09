@@ -18,7 +18,6 @@ class Voltmeter {
     this->r2 = r2;
     this->pin = pin;
     this->vin = 0;
-    pinMode(pin, INPUT);
   }
 
   void update() {

@@ -33,6 +33,7 @@ class Radio {
 
   Radio(int pin) {
     this->pin = pin;
+    pinMode(pin, OUTPUT);
     encoderBegin(pin);
   }
 
@@ -84,7 +85,7 @@ class Radio {
 
     // ppm encode and send out
     for (int i = 0; i < m; ++i) {
-      encoderWrite(i, toServo(this->channels[i]));
+      encoderWrite(i, toServo(&(this->channels[i])));
     }
   }
 
@@ -112,19 +113,15 @@ class Radio {
 
  private:
 
-  float toServo(float input) {
+  float toServo(float *input) {
 
-    if (input > 1) {
-      input = 1;
-    } else if (input < -1) {
-      input = -1;
+    if (*input > 1) {
+      *input = 1;
+    } else if (*input < -1) {
+      *input = -1;
     }
 
-    Serial.print("input: ");
-    Serial.println(input);
-    float val = MIN_SERVO_PULSE + (1 + input) * RANGE / 2.0;
-    Serial.print("value: ");
-    Serial.println(val);
+    float val = MIN_SERVO_PULSE + (1 + *input) * RANGE / 2.0;
     return val;
   }
 

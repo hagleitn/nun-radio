@@ -32,7 +32,6 @@ class LCD {
     display->begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
     display->display();
-    delay(500);
   }
 
   void setVolts(float volts) {
@@ -43,13 +42,13 @@ class LCD {
     this->rssi = rssi;
   }
 
-  void setModelName(char *modelName) {
+  void setModelName(char *name) {
     int i = 0;
     for (; i < LENGTH_NAME; ++i) {
-      if (modelName[i] == '\0') {
+      if (name[i] == '\0') {
         break;
       }
-      this->modelName[i] = modelName[i];
+      this->modelName[i] = name[i];
     }
     for (; i < LENGTH_NAME; ++i) {
       this->modelName[i] = ' ';
@@ -67,8 +66,6 @@ class LCD {
   }
 
   void updateHeaders() {
-    display->setCursor(0,0);
-
     display->print(this->volts);
     display->print("V  ");
     display->print(this->modelName);
@@ -79,7 +76,7 @@ class LCD {
 
   void updateInputs() {
     int width = (display->width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
-    int height = (display->height() - SEPARATOR)/2;
+    int height = (display->height() - 24)/2;
 
     for (int i = 0; i < numInputs; ++i) {
       int amp = (inputs[i]+1)*height +1;
@@ -89,18 +86,18 @@ class LCD {
 
   void updateChannels() {
     int width = (display->width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
-    int height = (display->height() - SEPARATOR)/2;
+    int height = (display->height() - 24)/2;
     int offset = display->width()/2 + SEPARATOR;
 
     for (int i = 0; i < numChannels; ++i) {
-      int amp = (inputs[i]+1)*height +1;
+      int amp = (channels[i]+1)*height +1;
       display->fillRect(offset + i*SPACE + i*width, display->height() - amp, width, amp, 1);
     }
   }
 
   void update() {
     display->clearDisplay();
-
+    display->setCursor(0,0);
     display->setTextSize(1);
     display->setTextColor(WHITE);
 
