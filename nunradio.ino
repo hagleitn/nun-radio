@@ -6,9 +6,11 @@
 #include "Voltmeter.h"
 #include "LCD.h"
 #include "ModelRegistry.h"
+#include "Telemetry.h"
 
 WiiChuck chuck;
 Voltmeter vmeter(A1, 100000.0, 30000.0);
+Telemetry telemetry;
 
 Radio radio(5);
 float inputs[4];
@@ -47,6 +49,7 @@ void setup() {
   chuck.update();
 
   vmeter.begin();
+  telemetry.begin();
 }
 
 void normalize(float *x, int n) {
@@ -60,14 +63,14 @@ void setInputs() {
   chuck.update();
   if (mode2) {
     inputs[0] = chuck.readJoyX()/100.0;
-    inputs[1] = chuck.readPitch()/90.0 - 1;
+    inputs[1] = -(chuck.readPitch()/90.0 - 1) * 2;
     inputs[2] = chuck.readJoyY()/100.0;
-    inputs[3] = chuck.readRoll()/90.0;
+    inputs[3] = chuck.readRoll()/90.0 * 2;
   } else {
     inputs[3] = chuck.readJoyX()/100.0;
-    inputs[2] = chuck.readPitch()/90.0 - 1;
+    inputs[2] = -(chuck.readPitch()/90.0 - 1) * 2;
     inputs[1] = chuck.readJoyY()/100.0;
-    inputs[0] = chuck.readRoll()/90.0;
+    inputs[0] = chuck.readRoll()/90.0 * 2;
   }
   normalize(inputs, 4);
 }
@@ -96,16 +99,16 @@ void handleButtons() {
     }
   }
 
-  if (lastZ - currentTime > 100
-      && lastZ - currentTime < 200
-      && lastC - currentTime > 200) {
+  if (currentTime - lastZ > 100
+      && currentTime - lastZ < 200
+      && currentTime - lastC > 200) {
     lastZ = -1000;
     mode2 = !mode2;
   }
 
-  if (lastC - currentTime > 100
-      && lastC - currentTime > 100
-      && lastZ - currentTime > 200) {
+  if (currentTime - lastC > 100
+      && currentTime - lastC < 200
+      && currentTime - lastZ > 200) {
     lastC = -1000;
     radio.setTrim(inputs, registry.current()->numInputs);
   }
@@ -119,6 +122,10 @@ void loop() {
   if (counter % 20 == 0) {
     vmeter.update();
     lcd.setVolts(vmeter.getVoltage());
+    telemetry.update();
+    lcd.setRssi(telemetry.getRssi());
+    lcd.setA1(telemetry.getA1());
+    lcd.setA2(telemetry.getA2());
   }
 
   setInputs();

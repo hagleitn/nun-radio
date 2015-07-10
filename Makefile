@@ -18,10 +18,11 @@ USER_LIB_PATH    :=  $(PROJECT_DIR)/lib
 
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
-BOARD_TAG         = pro5v328
+#BOARD_TAG         = pro5v328
+BOARD_TAG = mega2560
 
 ### ARDUINO_LIBS
-ARDUINO_LIBS     = Wire SPI
+ARDUINO_LIBS     = Wire SPI SoftwareSerial
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.
@@ -50,7 +51,8 @@ CXXFLAGS         += -pedantic -Wall -Wextra
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
-MONITOR_PORT      = /dev/tty.wchlink
+#MONITOR_PORT      = /dev/tty.wchlink
+MONITOR_PORT = /dev/tty.usb*
 
 ### CURRENT_DIR
 ### Do not touch - used for binaries path

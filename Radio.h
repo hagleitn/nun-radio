@@ -64,7 +64,7 @@ class Radio {
     int m = this->model->numChannels;
 
     // apply trim
-    subtract(this->inputs, inputs, this->trim, n);
+    add(this->inputs, inputs, this->trim, n);
 
     // appy expo to input
     for (int i = 0; i < n; ++i) {
@@ -163,11 +163,6 @@ class Radio {
     }
   }
 
-  void subtract(float *y, float *x1, float *x2, int n) {
-    for (int i = 0; i < n; ++i) {
-      y[i] = x1[i] - x2[i];
-    }
-  }
 };
 
 #endif

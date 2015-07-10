@@ -2,7 +2,7 @@
 #define LCD_h
 
 #define OLED_RESET 4
-#define LENGTH_NAME 6
+#define LENGTH_NAME 3
 
 #define SPACE 5
 #define SEPARATOR 10
@@ -17,7 +17,9 @@ class LCD {
  private:
 
   float volts;
-  float rssi;
+  int rssi;
+  int a1;
+  int a2;
   char modelName[LENGTH_NAME+1] = {};
   float *inputs;
   float *channels;
@@ -27,7 +29,7 @@ class LCD {
 
  public:
 
-   LCD() : display(OLED_RESET) {}
+  LCD() : display(OLED_RESET) {}
 
   void begin() {
     display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
@@ -38,8 +40,16 @@ class LCD {
     this->volts = volts;
   }
 
-  void setRssi(float rssi) {
+  void setRssi(int rssi) {
     this->rssi = rssi;
+  }
+
+  void setA1(int a1) {
+    this->a1 = a1;
+  }
+
+  void setA2(int a2) {
+    this->a2 = a2;
   }
 
   void setModelName(char *name) {
@@ -67,11 +77,18 @@ class LCD {
 
   void updateHeaders() {
     display.print(this->volts);
-    display.print("V  ");
+    display.print("V ");
     display.print(this->modelName);
-    display.print("  ");
-    display.print(rssi);
-    display.println("%");
+    display.print(" ");
+    if (a1 != 0) {
+      display.print(a1);
+      display.print(" ");
+    }
+    if (a2 != 0) {
+      display.print(a2);
+      display.print(" ");
+    }
+    display.println(rssi);
   }
 
   void updateInputs() {
