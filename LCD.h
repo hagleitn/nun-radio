@@ -34,54 +34,6 @@ class LCD {
   int numChannels;
   Adafruit_SSD1306 display;
 
- public:
-
- LCD() : display(OLED_RESET) {}
-
-  void begin() {
-    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-    display.display();
-  }
-
-  void setVolts(float volts) {
-    this->volts = volts;
-  }
-
-  void setRssi(int rssi) {
-    this->rssi = rssi;
-  }
-
-  void setA1(int a1) {
-    this->a1 = a1;
-  }
-
-  void setA2(int a2) {
-    this->a2 = a2;
-  }
-
-  void setModelName(char *name) {
-    int i = 0;
-    for (; i < LENGTH_NAME; ++i) {
-      if (name[i] == '\0') {
-        break;
-      }
-      this->modelName[i] = name[i];
-    }
-    for (; i < LENGTH_NAME; ++i) {
-      this->modelName[i] = ' ';
-    }
-  }
-
-  void setInputs(float *inputs, int n) {
-    this->inputs = inputs;
-    this->numInputs = n;
-  }
-
-  void setChannels(float *channels, int n) {
-    this->channels = channels;
-    this->numChannels = n;
-  }
-
   void drawVolts(float v, float max, float min, int x, int y, int w, int h, int b) {
     float level = (v - min) / (max - min);
     if (level > 1) level = 1;
@@ -145,6 +97,54 @@ class LCD {
       int amp = (channels[i]+1)*height +1;
       display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
     }
+  }
+
+ public:
+
+ LCD() : display(OLED_RESET) {}
+
+  void begin() {
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+    display.display();
+  }
+
+  void setVolts(float volts) {
+    this->volts = volts;
+  }
+
+  void setRssi(int rssi) {
+    this->rssi = rssi;
+  }
+
+  void setA1(int a1) {
+    this->a1 = a1;
+  }
+
+  void setA2(int a2) {
+    this->a2 = a2;
+  }
+
+  void setModelName(char *name) {
+    int i = 0;
+    for (; i < LENGTH_NAME; ++i) {
+      if (name[i] == '\0') {
+        break;
+      }
+      this->modelName[i] = name[i];
+    }
+    for (; i < LENGTH_NAME; ++i) {
+      this->modelName[i] = ' ';
+    }
+  }
+
+  void setInputs(float *inputs, int n) {
+    this->inputs = inputs;
+    this->numInputs = n;
+  }
+
+  void setChannels(float *channels, int n) {
+    this->channels = channels;
+    this->numChannels = n;
   }
 
   void update() {

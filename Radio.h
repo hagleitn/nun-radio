@@ -58,7 +58,7 @@ class Radio {
     this->lowRates = false;
   }
 
-  void send(float *inputs) {
+  void update(float *inputs) {
 
     int n = this->model->numInputs;
     int m = this->model->numChannels;

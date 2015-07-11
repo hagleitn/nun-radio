@@ -22,7 +22,6 @@ class Telemetry {
  Telemetry() : in(RXPIN,TXPIN,true) {};
 
   void begin() {
-    //Serial1.begin(9600, SERIAL_8N1);
     pinMode(RXPIN,INPUT);
     pinMode(TXPIN,OUTPUT);
     Serial.begin(9600);
@@ -32,7 +31,6 @@ class Telemetry {
   void update() {
     while (in.available() > 0) {
       buffer[current] = in.read();
-      //      Serial.print("Received: ");
       Serial.println(buffer[current],HEX);
       current = (current+1) % 5;
 
@@ -42,8 +40,6 @@ class Telemetry {
         a1 = buffer[(current+2)%5];
         a2 = buffer[(current+3)%5];
         rssi = buffer[(current+4)%5];
-        //      Serial.print("rssi: ");
-        //      Serial.println(rssi);
         break;
       }
     }
