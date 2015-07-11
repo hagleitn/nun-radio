@@ -19,43 +19,25 @@ class Telemetry {
 
  public:
 
- Telemetry() : in(RXPIN,TXPIN,true) {};
+  Telemetry();
 
-  void begin() {
-    pinMode(RXPIN,INPUT);
-    pinMode(TXPIN,OUTPUT);
-    Serial.begin(9600);
-    in.begin(9600);
-  }
-
-  void update() {
-    while (in.available() > 0) {
-      buffer[current] = in.read();
-      Serial.println(buffer[current],HEX);
-      current = (current+1) % 5;
-
-      if (buffer[current] == 0x7E && buffer[(current+1)%5] == 0xFE) {
-        // telemetry header:
-        // next bytes: a1 a2 rssi
-        a1 = buffer[(current+2)%5];
-        a2 = buffer[(current+3)%5];
-        rssi = buffer[(current+4)%5];
-        break;
-      }
-    }
-  }
-
-  int getRssi() {
-    return rssi;
-  }
-
-  int getA1() {
-    return a1;
-  }
-
-  int getA2() {
-    return a2;
-  }
+  void begin();
+  void update();
+  inline int getRssi();
+  inline int getA1();
+  inline int getA2();
 };
+
+inline int Telemetry::getRssi() {
+  return rssi;
+}
+
+inline int Telemetry::getA1() {
+  return a1;
+}
+
+inline int Telemetry::getA2() {
+  return a2;
+}
 
 #endif
