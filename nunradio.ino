@@ -27,7 +27,6 @@ void handleButtons(float *);
 
 void setup() {
   lcd.begin();
-  delay(500);
 
   radio.begin();
 
@@ -37,6 +36,7 @@ void setup() {
   setModel(registry.current(), controller.getInputs());
 
   vmeter.begin();
+
   telemetry.begin();
 }
 
