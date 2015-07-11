@@ -40,8 +40,10 @@ void Radio::update(float *inputs) {
   // process the mix
   mix(this->model->transform, this->inputs, this->channels, n, m);
 
+#ifdef DUAL_RATES
   // limit throw with (dual) rates
   mult(this->channels, this->channels, this->lowRates ? this->model->drLow : this->model->drHigh, m);
+#endif
 
   // ppm encode and send out
   for (uint8_t i = 0; i < m; ++i) {

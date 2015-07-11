@@ -16,7 +16,7 @@ Model *ModelRegistry::next() {
 }
 
 Model *ModelRegistry::previous() {
-  if (--current_ < 0) {
+  if (--current_ >= NUM_MODELS) {
     current_ = NUM_MODELS - 1;
   }
   return &models[current_];

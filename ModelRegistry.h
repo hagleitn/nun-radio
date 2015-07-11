@@ -17,46 +17,54 @@ class ModelRegistry {
   float channels[4] = {};
   float trim[4] = {};
   float expo[4] = {0.3,0.3,0.3,0.3};
+#ifdef DUAL_RATES
   float drLow[4] = {0.8,0.8,0.8,0.8};
   float drHigh[4] = {1,1,1,1};
+#endif
 
   Model models[NUM_MODELS] =
     {
       {
         "bee2",
         expo,
+#ifdef DUAL_RATES
         drLow,
         drHigh,
+#endif
         (float*)elevon,
-        2,
         channels,
-        4,
         input,
-        trim
+        trim,
+	2,
+	4
       },
       {
         "raptor",
         expo,
+#ifdef DUAL_RATES
         drLow,
         drHigh,
+#endif
         (float*)elevon,
-        2,
         channels,
-        4,
         input,
-        trim
+        trim,
+	2,
+	4
       },
       {
         "libelle",
         expo,
+#ifdef DUAL_RATES
         drLow,
         drHigh,
+#endif
         (float*)full,
-        4,
         channels,
-        4,
         input,
-        trim
+        trim,
+	4,
+	4
       }
     };
 

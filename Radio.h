@@ -1,6 +1,8 @@
 #ifndef Radio_h
 #define Radio_h
 
+//#define DUAL_RATES
+
 #include "Arduino.h"
 #include "RCEncoder.h"
 #include <math.h>
@@ -12,14 +14,16 @@
 typedef struct model_ {
   char *name;
   float *expo;
+#ifdef DUAL_RATES
   float *drLow;
   float *drHigh;
+#endif
   float *transform;
-  uint8_t numChannels;
   float *channels;
-  uint8_t numInputs;
   float *inputs;
   float *trim;
+  uint8_t numChannels;
+  uint8_t numInputs;
 } Model;
 
 class Radio {
