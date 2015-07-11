@@ -2,6 +2,7 @@
 #define ModelRegistry_h
 
 #include "Arduino.h"
+#include "Radio.h"
 
 // reta
 class ModelRegistry {
@@ -21,7 +22,7 @@ class ModelRegistry {
   Model models[3] =
     {
       {
-        "bee",
+        "bee2",
         expo,
         drLow,
         drHigh,
@@ -60,27 +61,10 @@ class ModelRegistry {
 
  public:
 
-  void begin() {
-    current_ = 0;
-  }
-
-  Model *current() {
-    return &models[current_];
-  }
-
-  Model *next() {
-    if(++current_ >= num) {
-      current_ = 0;
-    }
-    return &models[current_];
-  }
-
-  Model *previous() {
-    if (--current_ < 0) {
-      current_ = num - 1;
-    }
-    return &models[current_];
-  }
+  void begin();
+  Model *current();
+  Model *next();
+  Model *previous();
 };
 
 #endif

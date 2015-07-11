@@ -47,7 +47,7 @@ CXXFLAGS_STD      = -std=gnu++11 -I$(INC_DIR)
 
 ### CXXFLAGS
 ### Flags you might want to set for debugging purpose. Comment to stop.
-CXXFLAGS         += -pedantic -Wall -Wextra
+CXXFLAGS         += -pedantic -Wall -Wextra -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -finline-limit=3 -fno-inline-small-functions -ffunction-sections -fdata-sections -Wl,--relax,--gc-sections -mcall-prologues -fno-tree-scev-cprop -gdwarf-2
 
 ### MONITOR_PORT
 ### The port your board is connected to. Using an '*' tries all the ports and finds the right one.
