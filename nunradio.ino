@@ -18,7 +18,7 @@ float inputs[4];
 LCD lcd;
 ModelRegistry registry;
 
-bool zPressed, cPressed;
+bool zPressed, cPressed, bothPressed;
 
 int counter = 0;
 long lastM = -1000;
@@ -76,18 +76,39 @@ void setInputs() {
 }
 
 void handleButtons() {
-  zPressed = chuck.zPressed();
-  cPressed = chuck.cPressed();
 
-  if (zPressed) {
+  if (chuck.zPressed()) {
     lastZ = currentTime;
   }
 
-  if (cPressed) {
+  if (chuck.cPressed()) {
     lastC = currentTime;
   }
 
-  if (zPressed && cPressed) {
+  if (currentTime - lastZ > 100
+      && currentTime - lastZ < 200
+      && currentTime - lastC > 200) {
+    lastZ = -1000;
+    zPressed = true;
+  }
+
+  if (currentTime - lastC > 100
+      && currentTime - lastC < 200
+      && currentTime - lastZ > 200) {
+    lastC = -1000;
+    cPressed = true;
+  }
+
+  if (currentTime - lastC > 100
+      && currentTime - lastC < 200
+      && currentTime - lastZ > 100
+      && currentTime - lastZ < 200) {
+    lastC = -1000;
+    lastZ = -1000;
+    bothPressed = true;
+  }
+
+  if (bothPressed) {
     if (currentTime - lastM > 500) {
       if (inputs[mode2 ? 2 : 1] < -0.7) {
         lastM = currentTime;
@@ -97,20 +118,17 @@ void handleButtons() {
         setModel(registry.previous());
       }
     }
+    bothPressed = false;
   }
 
-  if (currentTime - lastZ > 100
-      && currentTime - lastZ < 200
-      && currentTime - lastC > 200) {
-    lastZ = -1000;
+  if (zPressed) {
     mode2 = !mode2;
+    zPressed = false;
   }
 
-  if (currentTime - lastC > 100
-      && currentTime - lastC < 200
-      && currentTime - lastZ > 200) {
-    lastC = -1000;
+  if (cPressed) {
     radio.setTrim(inputs, registry.current()->numInputs);
+    cPressed = false;
   }
 }
 

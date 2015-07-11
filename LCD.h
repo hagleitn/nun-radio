@@ -115,7 +115,7 @@ class LCD {
 
     int i = 0;
 
-    drawSignal(rssi, MAX_VOLTS, MIN_VOLTS, display.width() - 18, 5, 18, 10, 1);
+    drawSignal(rssi, 100, 0, display.width() - 18, 5, 18, 10, 1);
     if (a1 != 0) {
       ++i;
       drawVolts(a2, MAX_VOLTS, MIN_VOLTS, display.width() - (18 + 5) * i, 5, 18, 10, 1);
@@ -126,38 +126,38 @@ class LCD {
     }
   }
 
-    void updateInputs() {
-      int width = (display.width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
-      int height = (display.height() - 24)/2;
+  void updateInputs() {
+    int width = (display.width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
+    int height = (display.height() - 24)/2;
 
-      for (int i = 0; i < numInputs; ++i) {
-        int amp = (inputs[i]+1)*height +1;
-        display.fillRect(i*SPACE+i*width, display.height() - amp, width, amp, 1);
-      }
+    for (int i = 0; i < numInputs; ++i) {
+      int amp = (inputs[i]+1)*height +1;
+      display.fillRect(i*SPACE+i*width, display.height() - amp, width, amp, 1);
     }
+  }
 
-    void updateChannels() {
-      int width = (display.width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
-      int height = (display.height() - 24)/2;
-      int offset = display.width()/2 + SEPARATOR;
+  void updateChannels() {
+    int width = (display.width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
+    int height = (display.height() - 24)/2;
+    int offset = display.width()/2 + SEPARATOR;
 
-      for (int i = 0; i < numChannels; ++i) {
-        int amp = (channels[i]+1)*height +1;
-        display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
-      }
+    for (int i = 0; i < numChannels; ++i) {
+      int amp = (channels[i]+1)*height +1;
+      display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
     }
+  }
 
-    void update() {
-      display.clearDisplay();
-      display.setCursor(0,0);
-      display.setTextSize(1);
-      display.setTextColor(WHITE);
+  void update() {
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
 
-      updateHeaders();
-      updateInputs();
-      updateChannels();
-      display.display();
-    }
-  };
+    updateHeaders();
+    updateInputs();
+    updateChannels();
+    display.display();
+  }
+};
 
 #endif
