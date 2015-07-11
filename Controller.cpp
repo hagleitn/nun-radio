@@ -1,7 +1,7 @@
 #include "Controller.h"
 
-void Controller::normalize(float *x, int n) {
-  for (int i = 0; i < n; ++i) {
+void Controller::normalize(float *x, uint8_t n) {
+  for (uint8_t i = 0; i < n; ++i) {
     if (x[i] > 1) x[i] = 1;
     if (x[i] < -1) x[i] = -1;
   }
@@ -24,7 +24,7 @@ void Controller::setInputs() {
 }
 
 
-void Controller::handleButtons(long currentTime) {
+void Controller::handleButtons(unsigned long currentTime) {
 
   if (chuck.zPressed()) {
     lastZ = currentTime;

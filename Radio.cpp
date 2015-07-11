@@ -1,6 +1,6 @@
 #include "Radio.h"
 
-Radio::Radio(int pin) {
+Radio::Radio(uint8_t pin) {
   this->pin = pin;
 }
 
@@ -26,14 +26,14 @@ void Radio::setModel(Model *m) {
 
 void Radio::update(float *inputs) {
 
-  int n = this->model->numInputs;
-  int m = this->model->numChannels;
+  uint8_t n = this->model->numInputs;
+  uint8_t m = this->model->numChannels;
 
   // apply trim
   add(this->inputs, inputs, this->trim, n);
 
   // appy expo to input
-  for (int i = 0; i < n; ++i) {
+  for (uint8_t i = 0; i < n; ++i) {
     this->inputs[i] = expo(this->model->expo[i], this->inputs[i]);
   }
 
@@ -44,7 +44,7 @@ void Radio::update(float *inputs) {
   mult(this->channels, this->channels, this->lowRates ? this->model->drLow : this->model->drHigh, m);
 
   // ppm encode and send out
-  for (int i = 0; i < m; ++i) {
+  for (uint8_t i = 0; i < m; ++i) {
     encoderWrite(i, toServo(&(this->channels[i])));
   }
 }
@@ -57,8 +57,8 @@ float *Radio::getTrim() {
   return this->trim;
 }
 
-void Radio::setTrim(float *trim, int n) {
-  for (int i = 0; i < n; ++i) {
+void Radio::setTrim(float *trim, uint8_t n) {
+  for (uint8_t i = 0; i < n; ++i) {
     this->trim[i] = trim[i];
   }
 }
@@ -89,10 +89,10 @@ float Radio::toServo(float *input) {
  * inputs n float values coming from the controler
  * channels m outputs
  */
-void Radio::mix(float *transform, float *inputs, float *channels, int n, int m) {
+void Radio::mix(float *transform, float *inputs, float *channels, uint8_t n, uint8_t m) {
   init(channels, m, 0);
-  for (int j = 0; j < m; ++j)  {
-    for (int i = 0; i < n; ++i) {
+  for (uint8_t j = 0; j < m; ++j)  {
+    for (uint8_t i = 0; i < n; ++i) {
       channels[j] = channels[j] + inputs[i] * transform[i+j*n];
     }
   }

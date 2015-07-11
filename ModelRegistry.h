@@ -4,11 +4,12 @@
 #include "Arduino.h"
 #include "Radio.h"
 
+#define NUM_MODELS 3
+
 // reta
 class ModelRegistry {
  private:
-  int current_;
-  int num = 3;
+  uint8_t current_;
 
   float elevon[2][4] = {{0,0.5,0,0.5},{0,-0.5,0,0.5}};
   float full[4][4] = {{0,0,0,1},{0,0,0,1},{0,1,0,0},{1,0,0,0}};
@@ -19,7 +20,7 @@ class ModelRegistry {
   float drLow[4] = {0.8,0.8,0.8,0.8};
   float drHigh[4] = {1,1,1,1};
 
-  Model models[3] =
+  Model models[NUM_MODELS] =
     {
       {
         "bee2",

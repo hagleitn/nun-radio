@@ -7,13 +7,13 @@ class Voltmeter {
 
  private:
   float vin;
-  int pin;
+  uint8_t pin;
   float r1;
   float r2;
 
  public:
 
-  Voltmeter(int pin, float r1, float r2);
+  Voltmeter(uint8_t pin, float r1, float r2);
   void begin();
   void update();
   inline float getVoltage();

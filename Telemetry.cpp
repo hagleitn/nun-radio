@@ -5,14 +5,12 @@ Telemetry::Telemetry() : in(RXPIN,TXPIN,true) {};
 void Telemetry::begin() {
   pinMode(RXPIN,INPUT);
   pinMode(TXPIN,OUTPUT);
-  Serial.begin(9600);
   in.begin(9600);
 }
 
 void Telemetry::update() {
   while (in.available() > 0) {
     buffer[current] = in.read();
-    Serial.println(buffer[current],HEX);
     current = (current+1) % 5;
 
     if (buffer[current] == 0x7E && buffer[(current+1)%5] == 0xFE) {

@@ -9,7 +9,7 @@ Model *ModelRegistry::current() {
 }
 
 Model *ModelRegistry::next() {
-  if(++current_ >= num) {
+  if(++current_ >= NUM_MODELS) {
     current_ = 0;
   }
   return &models[current_];
@@ -17,7 +17,7 @@ Model *ModelRegistry::next() {
 
 Model *ModelRegistry::previous() {
   if (--current_ < 0) {
-    current_ = num - 1;
+    current_ = NUM_MODELS - 1;
   }
   return &models[current_];
 }

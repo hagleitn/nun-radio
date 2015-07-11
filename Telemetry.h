@@ -11,10 +11,10 @@ class Telemetry {
 
  private:
   uint8_t buffer[5] = {};
-  int current = 0;
-  int a1;
-  int a2;
-  int rssi;
+  uint8_t current = 0;
+  uint8_t a1;
+  uint8_t a2;
+  uint8_t rssi;
   SoftwareSerial in;
 
  public:
@@ -23,20 +23,20 @@ class Telemetry {
 
   void begin();
   void update();
-  inline int getRssi();
-  inline int getA1();
-  inline int getA2();
+  inline uint8_t getRssi();
+  inline uint8_t getA1();
+  inline uint8_t getA2();
 };
 
-inline int Telemetry::getRssi() {
+inline uint8_t Telemetry::getRssi() {
   return rssi;
 }
 
-inline int Telemetry::getA1() {
+inline uint8_t Telemetry::getA1() {
   return a1;
 }
 
-inline int Telemetry::getA2() {
+inline uint8_t Telemetry::getA2() {
   return a2;
 }
 
