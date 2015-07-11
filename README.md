@@ -1,5 +1,13 @@
 # nun-radio
-Wii Nunchuck based RC radio
+Wii Nunchuck based RC radio. Handles:
+   * reading from nunchucks
+   * sending data to Frsky's DIY radio module (or any ppm radio)
+   * expo
+   * dual rates
+   * a screen display
+   * multiple models with selection
+   * trim
+   * switching between mode1/mode2 (elevator/aileron via tilt or via joystick)
 
 Lots of 'borrowed' code:
 
