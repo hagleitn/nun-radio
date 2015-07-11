@@ -134,7 +134,7 @@ void loop() {
 
   radio.send(inputs);
 
-  if (counter % 10 == 0) {
-    lcd.update();
-  }
+  //  if (counter % 10 == 0) {
+  lcd.update();
+  //  }
 }
