@@ -18,7 +18,7 @@ Radio radio(5);
 LCD lcd;
 ModelRegistry registry;
 
-unsigned long lastM = -1000;
+unsigned long lastM = 0;
 unsigned long currentTime = 0;
 unsigned int counter = 0;
 

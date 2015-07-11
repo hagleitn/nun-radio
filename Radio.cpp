@@ -1,8 +1,10 @@
 #include "Radio.h"
 
-Radio::Radio(uint8_t pin) {
-  this->pin = pin;
-}
+Radio::Radio(uint8_t pin) : pin(pin)
+#ifdef DUAL_RATES
+			  , lowRates(false)
+#endif
+{}
 
 void Radio::begin() {
   pinMode(pin, OUTPUT);
@@ -21,7 +23,9 @@ void Radio::setModel(Model *m) {
 
   init(this->trim, this->model->numInputs, 0);
 
+#ifdef DUAL_RATES
   this->lowRates = false;
+#endif
 }
 
 void Radio::update(float *inputs) {
@@ -65,6 +69,7 @@ void Radio::setTrim(float *trim, uint8_t n) {
   }
 }
 
+#ifdef DUAL_RATES
 void Radio::setLowRates() {
   this->lowRates = true;
 }
@@ -72,6 +77,7 @@ void Radio::setLowRates() {
 void Radio::setHighRates() {
   this->lowRates = false;
 }
+#endif
 
 float Radio::toServo(float *input) {
 

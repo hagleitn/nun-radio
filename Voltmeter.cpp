@@ -1,11 +1,6 @@
 #include "Voltmeter.h"
 
-Voltmeter::Voltmeter(uint8_t pin, float r1, float r2) {
-  this->r1 = r1;
-  this->r2 = r2;
-  this->pin = pin;
-  this->vin = 0;
-}
+Voltmeter::Voltmeter(uint8_t pin, float r1, float r2) : pin(pin), r1(r1), r2(r2), vin(vin) {}
 
 void Voltmeter::begin() {
   pinMode(pin, INPUT);

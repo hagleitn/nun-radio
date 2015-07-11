@@ -33,7 +33,9 @@ class Radio {
   float *inputs;
   float *channels;
   float *trim;
+#ifdef DUAL_RATES
   bool lowRates;
+#endif
   uint8_t pin;
 
  public:
@@ -45,8 +47,11 @@ class Radio {
   float *getChannels();
   float *getTrim();
   void setTrim(float *trim, uint8_t n);
+
+#ifdef DUAL_RATES
   void setLowRates();
   void setHighRates();
+#endif
 
  private:
 

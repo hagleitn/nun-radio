@@ -57,7 +57,7 @@ class LCD {
   void update();
 };
 
-inline LCD::LCD() : display(OLED_RESET) {}
+inline LCD::LCD() : volts(0), rssi(0), a1(0), a2(0), numInputs(0), numChannels(0), display(OLED_RESET) {}
 
 inline void LCD::begin() {
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);

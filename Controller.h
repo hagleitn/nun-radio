@@ -10,12 +10,12 @@ class Controller {
   WiiChuck chuck;
   bool zPressed_, cPressed_, bothPressed_;
 
-  unsigned long lastZ = -1000;
-  unsigned long lastC = -1000;
+  unsigned long lastZ;
+  unsigned long lastC;
 
   bool mode2 = true;
 
-  float inputs[4];
+  float inputs[4] = {};
 
  private:
   void normalize(float *x, uint8_t n);
@@ -24,6 +24,7 @@ class Controller {
 
  public:
 
+  inline Controller();
   inline void begin();
   inline void update(unsigned long currentTime);
   inline float *getInputs();
@@ -33,6 +34,11 @@ class Controller {
   inline bool getMode();
   inline bool bothPressed();
 };
+
+inline Controller::Controller() :
+		  zPressed_(false), cPressed_(false),
+		  bothPressed_(false), lastZ(0),
+		  lastC(0), mode2(true) {}
 
 inline void Controller::begin() {
   chuck.begin();

@@ -11,7 +11,7 @@ class Telemetry {
 
  private:
   uint8_t buffer[5] = {};
-  uint8_t current = 0;
+  uint8_t current;
   uint8_t a1;
   uint8_t a2;
   uint8_t rssi;
