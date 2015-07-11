@@ -9,7 +9,6 @@
 // reta
 class ModelRegistry {
  private:
-  uint8_t current_;
 
   float elevon[2][4] = {{0,0.5,0,0.5},{0,-0.5,0,0.5}};
   float full[4][4] = {{0,0,0,1},{0,0,0,1},{0,1,0,0},{1,0,0,0}};
@@ -21,6 +20,7 @@ class ModelRegistry {
   float drLow[4] = {0.8,0.8,0.8,0.8};
   float drHigh[4] = {1,1,1,1};
 #endif
+  uint8_t current_;
 
   Model models[NUM_MODELS] =
     {

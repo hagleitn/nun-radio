@@ -32,6 +32,7 @@ class Adafruit_GFX : public Print {
 
   // These exist only with Adafruit_GFX (no subclass overrides)
   void
+#ifdef FULL_GRAPHICS
     drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color),
     drawCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername,
                      uint16_t color),
@@ -52,6 +53,7 @@ class Adafruit_GFX : public Print {
                int16_t w, int16_t h, uint16_t color, uint16_t bg),
     drawXBitmap(int16_t x, int16_t y, const uint8_t *bitmap,
                 int16_t w, int16_t h, uint16_t color),
+#endif
     drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
              uint16_t bg, uint8_t size),
     setCursor(int16_t x, int16_t y),

@@ -65,7 +65,7 @@ void LCD::updateChannels() {
   }
 }
 
-void LCD::setModelName(char *name) {
+void LCD::setModelName(char const *name) {
   uint8_t i = 0;
   for (; i < LENGTH_NAME; ++i) {
     if (name[i] == '\0') {

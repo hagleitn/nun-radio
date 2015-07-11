@@ -51,7 +51,7 @@ class LCD {
   inline void setRssi(uint8_t rssi);
   inline void setA1(uint8_t a1);
   inline void setA2(uint8_t a2);
-  void setModelName(char *name);
+  void setModelName(char const *name);
   void setInputs(float *inputs, uint8_t n);
   void setChannels(float *channels, uint8_t n);
   void update();

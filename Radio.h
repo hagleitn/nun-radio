@@ -7,12 +7,12 @@
 #include "RCEncoder.h"
 #include <math.h>
 
-#define MIN_SERVO_PULSE 544
-#define MAX_SERVO_PULSE 2400
+#define MIN_SERVO_PULSE 1000
+#define MAX_SERVO_PULSE 2000
 #define RANGE (MAX_SERVO_PULSE - MIN_SERVO_PULSE)
 
 typedef struct model_ {
-  char *name;
+  char const *name;
   float *expo;
 #ifdef DUAL_RATES
   float *drLow;

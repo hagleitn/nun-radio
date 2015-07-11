@@ -55,6 +55,7 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h):
   _cp437    = false;
 }
 
+#ifdef FULL_GRAPHICS
 // Draw a circle outline
 void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
                               uint16_t color) {
@@ -162,6 +163,7 @@ void Adafruit_GFX::fillCircleHelper(int16_t x0, int16_t y0, int16_t r,
     }
   }
 }
+#endif
 
 // Bresenham's algorithm - thx wikpedia
 void Adafruit_GFX::drawLine(int16_t x0, int16_t y0,
@@ -239,6 +241,7 @@ void Adafruit_GFX::fillScreen(uint16_t color) {
   fillRect(0, 0, _width, _height, color);
 }
 
+#ifdef FULL_GRAPHICS
 // Draw a rounded rectangle
 void Adafruit_GFX::drawRoundRect(int16_t x, int16_t y, int16_t w,
                                  int16_t h, int16_t r, uint16_t color) {
@@ -407,6 +410,8 @@ void Adafruit_GFX::drawXBitmap(int16_t x, int16_t y,
   }
 }
 
+#endif
+
 #if ARDUINO >= 100
 size_t Adafruit_GFX::write(uint8_t c)
 #else
@@ -540,7 +545,7 @@ int16_t Adafruit_GFX::height(void) const {
   return _height;
 }
 
-void Adafruit_GFX::invertDisplay(boolean i) {
+void Adafruit_GFX::invertDisplay(boolean) {
   // Do nothing, must be subclassed if supported
 }
 
@@ -572,7 +577,7 @@ void Adafruit_GFX_Button::initButton(Adafruit_GFX *gfx,
 }
 
 
-
+#ifdef FULL_GRAPHICS
 void Adafruit_GFX_Button::drawButton(boolean inverted) {
   uint16_t fill, outline, text;
 
@@ -611,3 +616,4 @@ void Adafruit_GFX_Button::press(boolean p) {
 boolean Adafruit_GFX_Button::isPressed() { return currstate; }
 boolean Adafruit_GFX_Button::justPressed() { return (currstate && !laststate); }
 boolean Adafruit_GFX_Button::justReleased() { return (!currstate && laststate); }
+#endif
