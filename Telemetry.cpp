@@ -2,7 +2,7 @@
 
 Telemetry::Telemetry()
   : current(0), a1(0), a2(0), rssi(0),
-    in(RXPIN,TXPIN,true) {};
+    in(RXPIN,TXPIN,true) {}
 
 void Telemetry::begin() {
   pinMode(RXPIN,INPUT);
