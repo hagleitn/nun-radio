@@ -8,8 +8,16 @@
 #include "Telemetry.h"
 #include "Controller.h"
 
-Voltmeter vmeter(A1, 100000.0, 30000.0);
+#ifdef ENABLE_ALARM
+#include "Alarm.h"
+#endif
+
+Voltmeter vmeter(A1, 100000l, 30000l);
 Telemetry telemetry;
+
+#ifdef ENABLE_ALARM
+Alarm alarm(6);
+#endif
 
 Controller controller;
 
@@ -22,6 +30,9 @@ unsigned long lastM = 0;
 unsigned long currentTime = 0;
 unsigned int counter = 0;
 
+uint8_t volts[3] = {};
+uint8_t signals[1] = {};
+
 void setModel(Model*, float*);
 void handleButtons(float *);
 
@@ -31,6 +42,10 @@ void setup() {
   radio.begin();
 
   controller.begin();
+
+#ifdef ENABLE_ALARM
+  alarm.begin();
+#endif
 
   registry.begin();
   setModel(registry.current(), controller.getInputs());
@@ -47,12 +62,29 @@ void loop() {
 
   if (counter % 20 == 0) {
     vmeter.update();
-    lcd.setVolts(vmeter.getVoltage());
+    volts[0] = vmeter.getVoltage();
+
     telemetry.update();
-    lcd.setRssi(telemetry.getRssi());
-    lcd.setA1(telemetry.getA1());
-    lcd.setA2(telemetry.getA2());
+
+    volts[1] = telemetry.getA1();
+    volts[2] = telemetry.getA2();
+    signals[0] = telemetry.getRssi();
+
+    lcd.setTelemetryAvailable(telemetry.aquired());
+    lcd.setVolts(volts[0]);
+    lcd.setRssi(signals[0]);
+    lcd.setA1(volts[1]);
+    lcd.setA2(volts[2]);
   }
+
+#ifdef ENABLE_ALARM
+  if (counter % 8 == 0) {
+    alarm.update(currentTime, volts,
+		 telemetry.aquired() ? 3 : 1, signals,
+		 telemetry.aquired() ? 1 : 0);
+  }
+#endif
+
 
   controller.update(currentTime);
 
@@ -89,8 +121,14 @@ void handleButtons(float *inputs) {
 
 void setModel(Model *m, float *inputs) {
   radio.setModel(m);
+
   lcd.setChannels(radio.getChannels(), m->numChannels);
   lcd.setModelName(m->name);
   lcd.setRssi(0);
   lcd.setInputs(inputs, m->numInputs);
+
+#ifdef ENABLE_ALARM
+  alarm.setMinVolts(m->minVolts);
+  alarm.setMinSignals(m->minSignals);
+#endif
 }

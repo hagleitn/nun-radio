@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "Radio.h"
+#include "Battery.h"
 
 #define NUM_MODELS 3
 
@@ -16,9 +17,13 @@ class ModelRegistry {
   float channels[4] = {};
   float trim[4] = {};
   float expo[4] = {0.3,0.3,0.3,0.3};
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   float drLow[4] = {0.8,0.8,0.8,0.8};
   float drHigh[4] = {1,1,1,1};
+#endif
+#ifdef ENABLE_ALARM
+  uint8_t minVolts[3] = {VOLTS_TO_BYTE(WARN_VOLTS), VOLTS_TO_BYTE(4.8), 0xFF};
+  uint8_t minSignals[1] = {20};
 #endif
   uint8_t current_;
 
@@ -27,9 +32,13 @@ class ModelRegistry {
       {
         "bee2",
         expo,
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
         drLow,
         drHigh,
+#endif
+#ifdef ENABLE_ALARM
+	minVolts,
+	minSignals,
 #endif
         (float*)elevon,
         channels,
@@ -41,9 +50,13 @@ class ModelRegistry {
       {
         "raptor",
         expo,
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
         drLow,
         drHigh,
+#endif
+#ifdef ENABLE_ALARM
+	minVolts,
+	minSignals,
 #endif
         (float*)elevon,
         channels,
@@ -55,9 +68,13 @@ class ModelRegistry {
       {
         "libelle",
         expo,
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
         drLow,
         drHigh,
+#endif
+#ifdef ENABLE_ALARM
+	minVolts,
+	minSignals,
 #endif
         (float*)full,
         channels,

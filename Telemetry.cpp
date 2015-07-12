@@ -1,7 +1,7 @@
 #include "Telemetry.h"
 
 Telemetry::Telemetry()
-  : current(0), a1(0), a2(0), rssi(0),
+  : current(0), a1(0), a2(0), rssi(0), hasTelemetry(false),
     in(RXPIN,TXPIN,true) {}
 
 void Telemetry::begin() {
@@ -11,11 +11,14 @@ void Telemetry::begin() {
 }
 
 void Telemetry::update() {
+  bool hasTelemetry = false;
+
   while (in.available() > 0) {
     buffer[current] = in.read();
     current = (current+1) % 5;
 
     if (buffer[current] == 0x7E && buffer[(current+1)%5] == 0xFE) {
+      hasTelemetry = true;
       // telemetry header:
       // next bytes: a1 a2 rssi
       a1 = buffer[(current+2)%5];

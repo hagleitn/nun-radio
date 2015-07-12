@@ -1,7 +1,7 @@
 #ifndef Radio_h
 #define Radio_h
 
-//#define DUAL_RATES
+//#define ENABLE_DUAL_RATES
 
 #include "Arduino.h"
 #include "RCEncoder.h"
@@ -14,9 +14,13 @@
 typedef struct model_ {
   char const *name;
   float *expo;
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   float *drLow;
   float *drHigh;
+#endif
+#ifdef ENABLE_ALARM
+  uint8_t *minVolts;
+  uint8_t *minSignals;
 #endif
   float *transform;
   float *channels;
@@ -33,7 +37,7 @@ class Radio {
   float *inputs;
   float *channels;
   float *trim;
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   bool lowRates;
 #endif
   uint8_t pin;
@@ -48,7 +52,7 @@ class Radio {
   float *getTrim();
   void setTrim(float *trim, uint8_t n);
 
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   void setLowRates();
   void setHighRates();
 #endif

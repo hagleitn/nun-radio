@@ -1,17 +1,25 @@
 #include "LCD.h"
 
-void LCD::drawVolts(float v, float max, float min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
+void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
+#ifdef DEBUG
+  display.print(v);
+#else
   float level = (v - min) / (max - min);
   if (level > 1) level = 1;
   if (level < 0) level = 0;
   display.fillRect(x,y,w,h,WHITE);
   display.fillRect(x+b, y+b, w-2*b, h-2*b, BLACK);
   display.fillRect(x+b+1, y+b+1, (w-2*b-2) * level, h-2*b-2, WHITE);
+#endif
   display.setCursor(x+w+5, y+2);
 }
 
-void LCD::drawSignal(float v, float max, float min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
+void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
+#ifdef DEBUG
+  display.print(v);
+#else
   float level = (v - min) / (max - min);
+
   if (level > 1) level = 1;
   if (level < 0) level = 0;
   uint8_t numBars = (uint8_t) (level * 6 + 0.5);
@@ -24,23 +32,31 @@ void LCD::drawSignal(float v, float max, float min, uint8_t x, uint8_t y, uint8_
     display.fillRect(cur, y+(4-i)*heightIncrement, barWidth, heightIncrement*(i+1),  WHITE);
     cur += barWidth + b;
   }
+#endif
   display.setCursor(x+w+5, y+2);
 }
 
 void LCD::updateHeaders() {
-  drawVolts(this->volts, MAX_VOLTS, MIN_VOLTS, 0, 5, 18, 10, 1);
+  drawVolts(this->volts, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS), 0, 5, 18, 10, 1);
   display.print(this->modelName);
 
   uint8_t i = 0;
 
-  drawSignal(rssi, 100, 0, display.width() - 18, 5, 18, 10, 1);
-  if (a1 != 0) {
-    ++i;
-    drawVolts(a2, MAX_VOLTS, MIN_VOLTS, display.width() - (18 + 5) * i, 5, 18, 10, 1);
-  }
-  if (a2 != 0) {
-    ++i;
-    drawVolts(a1, MAX_VOLTS, MIN_VOLTS, display.width() - (18 + 5) * i, 5, 18, 10, 1);
+  if (telemetryAvailable) {
+    drawSignal(rssi, 100, 0, display.width() - 18, 5, 18, 10, 1);
+    if (a1 != 0) {
+      ++i;
+      drawVolts(a2, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS),
+		display.width() - (18 + 5) * i, 5, 18, 10, 1);
+    }
+    if (a2 != 0) {
+      ++i;
+      drawVolts(a1, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS),
+		display.width() - (18 + 5) * i, 5, 18, 10, 1);
+    }
+  } else {
+    display.setCursor(display.width() - 55, 7);
+    display.print("(no tele)");
   }
 }
 

@@ -1,16 +1,18 @@
 #include "Voltmeter.h"
 
-Voltmeter::Voltmeter(uint8_t pin, float r1, float r2) : vin(0), pin(pin), r1(r1), r2(r2) {}
+Voltmeter::Voltmeter(uint8_t pin, long r1, long r2) : vin(0), pin(pin), r1(r1), r2(r2) {}
 
 void Voltmeter::begin() {
+  Serial.begin(9600);
   pinMode(pin, INPUT);
 }
 
 void Voltmeter::update() {
-  float value = analogRead(pin);
-  float vout = (value * 5.0) / 1024.0;
-  this->vin = vout /  (r2 / (r1 + r2));
-  if (this->vin<0.09) {
-    this->vin=0.0;
+  long value = analogRead(pin);
+  float vout = (value * 5) / 1024.0;
+  float vin = vout /  (r2 / ((float)(r1 + r2)));
+  if (vin<0.09) {
+    vin=0.0;
   }
+  this->vin = VOLTS_TO_BYTE(vin);
 }

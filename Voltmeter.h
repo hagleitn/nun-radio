@@ -2,24 +2,25 @@
 #define Voltmeter_h
 
 #include "Arduino.h"
+#include "Battery.h"
 
 class Voltmeter {
 
  private:
-  float vin;
+  uint8_t vin;
   uint8_t pin;
-  float r1;
-  float r2;
+  long r1;
+  long r2;
 
  public:
 
-  Voltmeter(uint8_t pin, float r1, float r2);
+  Voltmeter(uint8_t pin, long r1, long r2);
   void begin();
   void update();
-  inline float getVoltage();
+  inline uint8_t getVoltage();
 };
 
-inline float Voltmeter::getVoltage() {
+inline uint8_t Voltmeter::getVoltage() {
   return this->vin;
 }
 

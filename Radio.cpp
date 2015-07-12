@@ -1,7 +1,7 @@
 #include "Radio.h"
 
 Radio::Radio(uint8_t pin) : pin(pin)
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
 			  , lowRates(false)
 #endif
 {}
@@ -23,7 +23,7 @@ void Radio::setModel(Model *m) {
 
   init(this->trim, this->model->numInputs, 0);
 
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   this->lowRates = false;
 #endif
 }
@@ -44,7 +44,7 @@ void Radio::update(float *inputs) {
   // process the mix
   mix(this->model->transform, this->inputs, this->channels, n, m);
 
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
   // limit throw with (dual) rates
   mult(this->channels, this->channels, this->lowRates ? this->model->drLow : this->model->drHigh, m);
 #endif
@@ -69,7 +69,7 @@ void Radio::setTrim(float *trim, uint8_t n) {
   }
 }
 
-#ifdef DUAL_RATES
+#ifdef ENABLE_DUAL_RATES
 void Radio::setLowRates() {
   this->lowRates = true;
 }
