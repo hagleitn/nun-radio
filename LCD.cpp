@@ -3,8 +3,12 @@
 void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
 #ifdef DEBUG
   display.print(v);
+  display.print(" ");
+  display.print(min);
+  display.print(" ");
+  display.print(max);
 #else
-  float level = (v - min) / (max - min);
+  float level = (v - min) / ((float) (max - min));
   if (level > 1) level = 1;
   if (level < 0) level = 0;
   display.fillRect(x,y,w,h,WHITE);
@@ -17,8 +21,12 @@ void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, u
 void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
 #ifdef DEBUG
   display.print(v);
+  display.print(" ");
+  display.print(min);
+  display.print(" ");
+  display.print(max);
 #else
-  float level = (v - min) / (max - min);
+  float level = (v - min) / ((float) (max - min));
 
   if (level > 1) level = 1;
   if (level < 0) level = 0;
@@ -38,7 +46,9 @@ void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, 
 
 void LCD::updateHeaders() {
   drawVolts(this->volts, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS), 0, 5, 18, 10, 1);
+#ifndef DEBUG
   display.print(this->modelName);
+#endif
 
   uint8_t i = 0;
 
