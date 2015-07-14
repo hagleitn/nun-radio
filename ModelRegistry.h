@@ -22,7 +22,7 @@ class ModelRegistry {
   float drHigh[4] = {1,1,1,1};
 #endif
 #ifdef ENABLE_ALARM
-  uint8_t minVolts[3] = {VOLTS_TO_BYTE(WARN_VOLTS), VOLTS_TO_BYTE(4.8), 0xFF};
+  uint8_t minVolts[3] = {VOLTS_TO_BYTE(WARN_VOLTS_LIPO(2)), VOLTS_TO_BYTE(WARN_VOLTS_NIMH(4)), 0xFF};
   uint8_t minSignals[1] = {20};
 #endif
   uint8_t current_;

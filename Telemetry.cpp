@@ -1,20 +1,28 @@
 #include "Telemetry.h"
 
 Telemetry::Telemetry()
-  : current(0), a1(0), a2(0), rssi(0), hasTelemetry(false),
-    in(RXPIN,TXPIN,true) {}
+  : current(0), a1(0), a2(0), rssi(0), hasTelemetry(false)
+#ifdef SOFTWARE_TELEMETRY
+  ,in(RXPIN,TXPIN,true)
+#endif
+{}
 
 void Telemetry::begin() {
   pinMode(RXPIN,INPUT);
   pinMode(TXPIN,OUTPUT);
-  in.begin(9600);
+  SERIAL_STREAM.begin(9600);
 }
 
 void Telemetry::update() {
-  bool hasTelemetry = false;
+  hasTelemetry = false;
 
-  while (in.available() > 0) {
-    buffer[current] = in.read();
+  while (SERIAL_STREAM.available() > 0) {
+    buffer[current] = SERIAL_STREAM.read();
+
+#ifdef DEBUG
+    Serial.println(buffer[current], HEX);
+#endif
+
     current = (current+1) % 5;
 
     if (buffer[current] == 0x7E && buffer[(current+1)%5] == 0xFE) {

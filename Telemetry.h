@@ -3,21 +3,32 @@
 
 #include "Arduino.h"
 #include "Battery.h"
+
+#ifdef SOFTWARE_TELEMETRY
 #include "SoftwareSerial.h"
+#endif
 
 #define RXPIN 10
 #define TXPIN 11
 
+#ifdef SOFTWARE_TELEMETRY
+#define SERIAL_STREAM in
+#else
+#define SERIAL_STREAM Serial1
+#endif
+
 class Telemetry {
 
  private:
-  uint8_t buffer[5] = {};
   uint8_t current;
   uint8_t a1;
   uint8_t a2;
   uint8_t rssi;
   bool hasTelemetry;
+  uint8_t buffer[5] = {};
+#ifdef SOFTWARE_TELEMETRY
   SoftwareSerial in;
+#endif
 
  public:
 

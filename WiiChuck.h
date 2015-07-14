@@ -85,6 +85,8 @@ class WiiChuck {
     Wire.beginTransmission(0x52);       // device address
     Wire.write(0xF0);
     Wire.write(0x55);
+    //Wire.write(0x40);
+    //Wire.write((uint8_t)0x00);
     Wire.endTransmission();
     delay(1);
     Wire.beginTransmission(0x52);
@@ -200,7 +202,7 @@ class WiiChuck {
   uint8_t _nunchuk_decode_byte (uint8_t x)
   {
     //decode is only necessary with certain initializations
-    //x = (x ^ 0x17) + 0x17;
+    // x = (x ^ 0x17) + 0x17;
     return x;
   }
 

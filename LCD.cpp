@@ -3,10 +3,11 @@
 void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
 #ifdef DEBUG
   display.print(v);
-  display.print(" ");
+  display.print("v ");
   display.print(min);
-  display.print(" ");
+  display.print("v ");
   display.print(max);
+  display.println("v");
 #else
   float level = (v - min) / ((float) (max - min));
   if (level > 1) level = 1;
@@ -24,7 +25,7 @@ void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, 
   display.print(" ");
   display.print(min);
   display.print(" ");
-  display.print(max);
+  display.println(max);
 #else
   float level = (v - min) / ((float) (max - min));
 
@@ -45,25 +46,24 @@ void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, 
 }
 
 void LCD::updateHeaders() {
-  drawVolts(this->volts, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS), 0, 5, 18, 10, 1);
+  drawVolts(this->volts, VOLTS_TO_BYTE(MAX_VOLTS_LIPO(2)),
+            VOLTS_TO_BYTE(MIN_VOLTS_LIPO(2)), 0, 5, 18, 10, 1);
+
 #ifndef DEBUG
   display.print(this->modelName);
 #endif
 
-  uint8_t i = 0;
-
   if (telemetryAvailable) {
     drawSignal(rssi, 100, 0, display.width() - 18, 5, 18, 10, 1);
     if (a1 != 0) {
-      ++i;
-      drawVolts(a2, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS),
-		display.width() - (18 + 5) * i, 5, 18, 10, 1);
+      drawVolts(a1, VOLTS_TO_BYTE(MAX_VOLTS_NIMH(4)), VOLTS_TO_BYTE(MIN_VOLTS_NIMH(4)),
+                display.width() - (18 + 5) * 2, 5, 18, 10, 1);
     }
-    if (a2 != 0) {
-      ++i;
-      drawVolts(a1, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS),
-		display.width() - (18 + 5) * i, 5, 18, 10, 1);
-    }
+    // currently not using a2. should make this configurable through model though
+    // if (a2 != 0) {
+    //   drawVolts(a2, VOLTS_TO_BYTE(MAX_VOLTS), VOLTS_TO_BYTE(MIN_VOLTS),
+    //          display.width() - (18 + 5) * 3, 5, 18, 10, 1);
+    // }
   } else {
     display.setCursor(display.width() - 55, 7);
     display.print("(no tele)");

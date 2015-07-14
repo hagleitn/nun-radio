@@ -37,15 +37,16 @@ void setModel(Model*, float*);
 void handleButtons(float *);
 
 void setup() {
+
+#ifdef DEBUG
+  Serial.begin(9600);
+#endif
+
   lcd.begin();
 
   radio.begin();
 
   controller.begin();
-
-#ifdef ENABLE_ALARM
-  alarm.begin();
-#endif
 
   registry.begin();
   setModel(registry.current(), controller.getInputs());
@@ -53,12 +54,15 @@ void setup() {
   vmeter.begin();
 
   telemetry.begin();
+
+#ifdef ENABLE_ALARM
+  alarm.begin();
+#endif
 }
 
 void loop() {
   delay(50);
   currentTime = millis();
-  ++counter;
 
   if (counter % 20 == 0) {
     vmeter.update();
@@ -70,6 +74,15 @@ void loop() {
     volts[2] = telemetry.getA2();
     signals[0] = telemetry.getRssi();
 
+#ifdef DEBUG
+    Serial.println("telemetry: ");
+    Serial.println(telemetry.aquired());
+    Serial.println(volts[0]);
+    Serial.println(volts[1]);
+    Serial.println(volts[2]);
+    Serial.println(signals[0]);
+#endif
+
     lcd.setTelemetryAvailable(telemetry.aquired());
     lcd.setVolts(volts[0]);
     lcd.setRssi(signals[0]);
@@ -80,8 +93,8 @@ void loop() {
 #ifdef ENABLE_ALARM
   if (counter % 8 == 0) {
     alarm.update(currentTime, volts,
-		 telemetry.aquired() ? 3 : 1, signals,
-		 telemetry.aquired() ? 1 : 0);
+                 telemetry.aquired() ? 3 : 1, signals,
+                 telemetry.aquired() ? 1 : 0);
   }
 #endif
 
@@ -95,6 +108,8 @@ void loop() {
   //  if (counter % 10 == 0) {
   lcd.update();
   //  }
+
+  ++counter;
 }
 
 void handleButtons(float *inputs) {
