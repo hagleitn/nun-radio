@@ -4,6 +4,7 @@ Wii Nunchuck based RC radio. Handles:
    * sending data to Frsky's DIY radio module (or any ppm radio)
    * reading telemetry from FrSky's DIY radio module (2-way protocol)
    * remaining battery/rssi display
+   * audible alarm for low battery and low signal strength
    * expo
    * dual rates
    * a screen display
