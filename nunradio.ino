@@ -16,7 +16,7 @@ Voltmeter vmeter(A1, 100000l, 30000l);
 Telemetry telemetry;
 
 #ifdef ENABLE_ALARM
-Alarm alarm(6);
+Alarm alarm(2);
 #endif
 
 Controller controller;
@@ -35,6 +35,9 @@ uint8_t signals[1] = {};
 
 void setModel(Model*, float*);
 void handleButtons(float *);
+
+#define DELAY 10
+#define ITERATIONS(ms) ((ms) / DELAY)
 
 void setup() {
 
@@ -61,10 +64,10 @@ void setup() {
 }
 
 void loop() {
-  delay(50);
+  delay(DELAY);
   currentTime = millis();
 
-  if (counter % 20 == 0) {
+  if (counter % ITERATIONS(1000) == 0) {
     vmeter.update();
     volts[0] = vmeter.getVoltage();
 
@@ -91,7 +94,7 @@ void loop() {
   }
 
 #ifdef ENABLE_ALARM
-  if (counter % 8 == 0) {
+  if (counter % ITERATIONS(300) == 0) {
     alarm.update(currentTime, volts,
                  telemetry.aquired() ? 3 : 1, signals,
                  telemetry.aquired() ? 1 : 0);
@@ -105,9 +108,9 @@ void loop() {
 
   radio.update(controller.getInputs());
 
-  //  if (counter % 10 == 0) {
-  lcd.update();
-  //  }
+  if (counter % ITERATIONS(200) == 0) {
+    lcd.update();
+  }
 
   ++counter;
 }

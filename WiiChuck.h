@@ -59,20 +59,20 @@ class WiiChuck {
 
   bool buttonZ;
   bool buttonC;
-  
+
   void begin() {
-    //Set power pinds
+
+    //Set power pins
     DDRC |= _BV(pwrpin) | _BV(gndpin);
-
     PORTC &=~ _BV(gndpin);
-
     PORTC |=  _BV(pwrpin);
 
     delay(100);  // wait for things to stabilize
 
-
     //send initialization handshake
     Wire.begin();
+    delay(1);
+
     cnt = 0;
     averageCounter = 0;
     // instead of the common 0x40 -> 0x00 initialization, we
@@ -85,15 +85,18 @@ class WiiChuck {
     Wire.beginTransmission(0x52);       // device address
     Wire.write(0xF0);
     Wire.write(0x55);
-    //Wire.write(0x40);
-    //Wire.write((uint8_t)0x00);
     Wire.endTransmission();
-    delay(1);
+    delay(30);
     Wire.beginTransmission(0x52);
     Wire.write(0xFB);
     Wire.write((uint8_t)0x00);
-
     Wire.endTransmission();
+    delay(30);
+    Wire.beginTransmission(0x52);
+    Wire.write(0xFA);
+    Wire.endTransmission();
+    delay(30);
+
     update();
     for (i = 0; i<3;i++) {
       angles[i] = 0;
@@ -110,12 +113,12 @@ class WiiChuck {
 
   void update() {
 
-    Wire.requestFrom (0x52, 6); // request data from nunchuck
+    Wire.requestFrom(0x52, 6); // request data from nunchuck
     while (Wire.available ()) {
       // receive byte as an integer
-      status[cnt] = _nunchuk_decode_byte (Wire.read()); //
-      cnt++;
+      status[cnt++] = _nunchuk_decode_byte (Wire.read());
     }
+
     if (cnt > 5) {
       lastZ = buttonZ;
       lastC = buttonC;
@@ -137,9 +140,8 @@ class WiiChuck {
 
       buttonZ = !( status[5] & B00000001);
       buttonC = !((status[5] & B00000010) >> 1);
-      _send_zero(); // send the request for next bytes
-
     }
+    _send_zero(); // send the request for next bytes
   }
 
   float readAccelX() {
