@@ -65,7 +65,7 @@ float *Radio::getTrim() {
 
 void Radio::setTrim(float *trim, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
-    this->trim[i] = trim[i];
+    this->trim[i] += trim[i];
   }
 }
 

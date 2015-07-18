@@ -67,7 +67,7 @@ class WiiChuck {
     PORTC &=~ _BV(gndpin);
     PORTC |=  _BV(pwrpin);
 
-    delay(100);  // wait for things to stabilize
+    delay(200);  // wait for things to stabilize
 
     //send initialization handshake
     Wire.begin();
