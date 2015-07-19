@@ -14,7 +14,7 @@
 #ifdef SOFTWARE_TELEMETRY
 #define SERIAL_STREAM in
 #else
-#define SERIAL_STREAM Serial1
+#define SERIAL_STREAM Serial
 #endif
 
 class Telemetry {

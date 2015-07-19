@@ -31,8 +31,10 @@
 #define DEFAULT_ZERO_JOY_Y 132
 
 //Set the power pins for the wiichuck, otherwise it will not be powered up
+#ifdef PORTC2
 #define pwrpin PORTC3
 #define gndpin PORTC2
+#endif
 
 
 class WiiChuck {
@@ -62,10 +64,12 @@ class WiiChuck {
 
   void begin() {
 
+#ifdef PORTC2
     //Set power pins
     DDRC |= _BV(pwrpin) | _BV(gndpin);
     PORTC &=~ _BV(gndpin);
     PORTC |=  _BV(pwrpin);
+#endif
 
     delay(200);  // wait for things to stabilize
 

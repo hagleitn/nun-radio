@@ -19,7 +19,8 @@ USER_LIB_PATH    :=  $(PROJECT_DIR)/lib
 ### BOARD_TAG
 ### It must be set to the board you are currently using. (i.e uno, mega2560, etc.)
 #BOARD_TAG         = pro5v328
-BOARD_TAG = mega2560
+#BOARD_TAG = mega2560
+BOARD_TAG = micro
 
 ### ARDUINO_LIBS
 ARDUINO_LIBS     = Wire SPI SoftwareSerial
