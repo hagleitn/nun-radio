@@ -103,6 +103,7 @@ class WiiChuck {
     }
     zeroJoyX = DEFAULT_ZERO_JOY_X;
     zeroJoyY = DEFAULT_ZERO_JOY_Y;
+    //calibrateJoy();
   }
 
 

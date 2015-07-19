@@ -16,7 +16,7 @@ Voltmeter vmeter(A1, 100000l, 30000l);
 Telemetry telemetry;
 
 #ifdef ENABLE_ALARM
-Alarm alarm(2);
+Alarm alarm(13);
 #endif
 
 Controller controller;
