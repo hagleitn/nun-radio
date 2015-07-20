@@ -38,15 +38,16 @@ class ModelRegistry {
         drHigh,
 #endif
 #ifdef ENABLE_ALARM
-	minVolts,
-	minSignals,
+        minVolts,
+        minSignals,
 #endif
         (float*)elevon,
         channels,
         input,
         trim,
-	2,
-	4
+        2,
+        4,
+        0
       },
       {
         "raptor",
@@ -56,15 +57,16 @@ class ModelRegistry {
         drHigh,
 #endif
 #ifdef ENABLE_ALARM
-	minVolts,
-	minSignals,
+        minVolts,
+        minSignals,
 #endif
         (float*)elevon,
         channels,
         input,
         trim,
-	2,
-	4
+        2,
+        4,
+        1
       },
       {
         "libelle",
@@ -74,15 +76,16 @@ class ModelRegistry {
         drHigh,
 #endif
 #ifdef ENABLE_ALARM
-	minVolts,
-	minSignals,
+        minVolts,
+        minSignals,
 #endif
         (float*)full,
         channels,
         input,
         trim,
-	4,
-	4
+        4,
+        4,
+        2
       },
       {
         "k8",
@@ -92,15 +95,16 @@ class ModelRegistry {
         drHigh,
 #endif
 #ifdef ENABLE_ALARM
-	minVolts,
-	minSignals,
+        minVolts,
+        minSignals,
 #endif
         (float*)reta,
         channels,
         input,
         trim,
-	4,
-	4
+        4,
+        4,
+        3
       }
     };
 

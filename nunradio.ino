@@ -7,6 +7,7 @@
 #include "ModelRegistry.h"
 #include "Telemetry.h"
 #include "Controller.h"
+#include "PermanentStore.h"
 
 #ifdef ENABLE_ALARM
 #include "Alarm.h"
@@ -25,6 +26,8 @@ Radio radio(5);
 
 LCD lcd;
 ModelRegistry registry;
+
+PermanentStore store;
 
 unsigned long lastM = 0;
 unsigned long currentTime = 0;
@@ -127,6 +130,9 @@ void handleButtons(float *inputs) {
       } else if (inputs[controller.getMode() ? 2 : 1] > 0.7) {
         lastM = currentTime;
         setModel(registry.previous(), inputs);
+      } else if (inputs[controller.getMode() ? 0 : 3] < -0.7) {
+	lastM = currentTime;
+	store.save(registry.current());
       }
     }
   }
@@ -141,6 +147,8 @@ void handleButtons(float *inputs) {
 }
 
 void setModel(Model *m, float *inputs) {
+  store.load(m);
+
   radio.setModel(m);
 
   lcd.setChannels(radio.getChannels(), m->numChannels);

@@ -23,7 +23,7 @@ USER_LIB_PATH    :=  $(PROJECT_DIR)/lib
 BOARD_TAG = micro
 
 ### ARDUINO_LIBS
-ARDUINO_LIBS     = Wire SPI SoftwareSerial
+ARDUINO_LIBS     = Wire SPI SoftwareSerial EEPROM
 
 ### MONITOR_BAUDRATE
 ### It must be set to Serial baudrate value you are using.

@@ -28,6 +28,7 @@ typedef struct model_ {
   float *trim;
   uint8_t numChannels;
   uint8_t numInputs;
+  uint8_t id;
 } Model;
 
 class Radio {
