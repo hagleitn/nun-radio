@@ -41,6 +41,9 @@ void handleButtons(float *);
 
 void setup() {
 
+  // wait for things to stabilize
+  delay(500);
+
 #ifdef DEBUG
   Serial.begin(9600);
 #endif
