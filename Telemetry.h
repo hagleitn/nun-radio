@@ -8,13 +8,18 @@
 #include "SoftwareSerial.h"
 #endif
 
+#ifdef SOFTWARE_TELEMETRY
 #define RXPIN 10
 #define TXPIN 11
+#else
+#define RXPIN 0
+#define TXPIN 1
+#endif
 
 #ifdef SOFTWARE_TELEMETRY
 #define SERIAL_STREAM in
 #else
-#define SERIAL_STREAM Serial
+#define SERIAL_STREAM Serial1
 #endif
 
 class Telemetry {

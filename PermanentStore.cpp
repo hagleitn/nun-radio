@@ -71,5 +71,9 @@ void PermanentStore::load(Model *m) {
     for (int i = 0; i < 4; ++i) {
       m->trim[i] = rec.values[i];
     }
+  } else {
+    for (int i = 0; i < 4; ++i) {
+      m->trim[i] = 0;
+    }
   }
 }

@@ -21,8 +21,6 @@ void Radio::setModel(Model *m) {
   init(this->inputs, this->model->numInputs, 0);
   init(this->channels, this->model->numChannels, 0);
 
-  init(this->trim, this->model->numInputs, 0);
-
 #ifdef ENABLE_DUAL_RATES
   this->lowRates = false;
 #endif
