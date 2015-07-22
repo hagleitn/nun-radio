@@ -30,6 +30,9 @@
 #define DEFAULT_ZERO_JOY_X 124
 #define DEFAULT_ZERO_JOY_Y 132
 
+#define MAX_JOY 255
+#define MAX_ANGLE 1023
+
 //Set the power pins for the wiichuck, otherwise it will not be powered up
 #ifdef PORTC2
 #define pwrpin PORTC3
@@ -40,7 +43,7 @@
 class WiiChuck {
  private:
   uint8_t cnt;
-  uint8_t status[6];              // array to store wiichuck output
+  uint8_t status[6] = {}; // array to store wiichuck output
   uint8_t averageCounter;
   //int accelArray[3][AVERAGE_N];  // X,Y,Z
   int i;
@@ -49,7 +52,7 @@ class WiiChuck {
   uint8_t zeroJoyY; // use calibrateJoy when the stick is at zero to correct
   int lastJoyX;
   int lastJoyY;
-  int angles[3];
+  int angles[3] = {};
 
   bool lastZ, lastC;
 
@@ -62,6 +65,23 @@ class WiiChuck {
   bool buttonZ;
   bool buttonC;
 
+  bool notConnected() {
+    // all max or all 0 indicate problem
+    // this happens with the wireless nunchuck
+    // before connection is established
+    return
+      (joyX == MAX_JOY &&
+       joyY == MAX_JOY &&
+       angles[0] == MAX_ANGLE &&
+       angles[1] == MAX_ANGLE &&
+       angles[2] == MAX_ANGLE)
+      || (joyX == 0 &&
+	  joyY == 0 &&
+	  angles[0] == 0 &&
+	  angles[1] == 0 &&
+	  angles [1] == 0);
+  }
+
   void begin() {
 
 #ifdef PORTC2
@@ -71,7 +91,7 @@ class WiiChuck {
     PORTC |=  _BV(pwrpin);
 #endif
 
-    delay(200);  // wait for things to stabilize
+    delay(100);  // wait for things to stabilize
 
     //send initialization handshake
     Wire.begin();
@@ -79,6 +99,10 @@ class WiiChuck {
 
     cnt = 0;
     averageCounter = 0;
+
+    zeroJoyX = DEFAULT_ZERO_JOY_X;
+    zeroJoyY = DEFAULT_ZERO_JOY_Y;
+
     // instead of the common 0x40 -> 0x00 initialization, we
     // use 0xF0 -> 0x55 followed by 0xFB -> 0x00.
     // this lets us use 3rd party nunchucks (like cheap $4 ebay ones)
@@ -86,30 +110,26 @@ class WiiChuck {
     // only side effect is that we no longer need to decode bytes in _nunchuk_decode_byte
     // see http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1264805255
     //
-    Wire.beginTransmission(0x52);       // device address
-    Wire.write(0xF0);
-    Wire.write(0x55);
-    Wire.endTransmission();
-    delay(30);
-    Wire.beginTransmission(0x52);
-    Wire.write(0xFB);
-    Wire.write((uint8_t)0x00);
-    Wire.endTransmission();
-    delay(30);
-    Wire.beginTransmission(0x52);
-    Wire.write(0xFA);
-    Wire.endTransmission();
-    delay(30);
+    do {
+      delay(100);
+      Wire.beginTransmission(0x52);       // device address
+      Wire.write(0xF0);
+      Wire.write(0x55);
+      Wire.endTransmission();
+      delay(30);
+      Wire.beginTransmission(0x52);
+      Wire.write(0xFB);
+      Wire.write((uint8_t)0x00);
+      Wire.endTransmission();
+      delay(30);
+      Wire.beginTransmission(0x52);
+      Wire.write(0xFA);
+      Wire.endTransmission();
+      delay(30);
 
-    update();
-    for (i = 0; i<3;i++) {
-      angles[i] = 0;
-    }
-    zeroJoyX = DEFAULT_ZERO_JOY_X;
-    zeroJoyY = DEFAULT_ZERO_JOY_Y;
-    //calibrateJoy();
+      update();
+    } while (notConnected());
   }
-
 
   void calibrateJoy() {
     zeroJoyX = joyX;
