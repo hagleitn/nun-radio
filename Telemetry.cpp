@@ -1,5 +1,7 @@
 #include "Telemetry.h"
 
+#define MAX_ITEMS 20
+
 Telemetry::Telemetry()
   : current(0), a1(0), a2(0), rssi(0), hasTelemetry(false)
 #ifdef SOFTWARE_TELEMETRY
@@ -15,8 +17,9 @@ void Telemetry::begin() {
 
 void Telemetry::update() {
   hasTelemetry = false;
+  uint8_t i = 0;
 
-  while (SERIAL_STREAM.available() > 0) {
+  while ((SERIAL_STREAM.available() > 0) && (i++ < MAX_ITEMS)) {
     buffer[current] = SERIAL_STREAM.read();
 
 #ifdef DEBUG
