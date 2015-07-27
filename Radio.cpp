@@ -65,9 +65,9 @@ float *Radio::getTrim() {
   return this->trim;
 }
 
-void Radio::setTrim(float *trim, uint8_t n) {
+void Radio::setTrim(float *inputs, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
-    this->trim[i] += trim[i];
+    this->trim[i] += expo(this->model->expo[i], inputs[i]);
   }
 }
 

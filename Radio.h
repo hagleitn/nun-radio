@@ -52,7 +52,7 @@ class Radio {
   float *getInputs();
   float *getChannels();
   float *getTrim();
-  void setTrim(float *trim, uint8_t n);
+  void setTrim(float *inputs, uint8_t n);
 
 #ifdef ENABLE_DUAL_RATES
   void toggleRates();
