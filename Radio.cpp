@@ -31,13 +31,13 @@ void Radio::update(float *inputs) {
   uint8_t n = this->model->numInputs;
   uint8_t m = this->model->numChannels;
 
-  // apply trim
-  add(this->inputs, inputs, this->trim, n);
-
   // appy expo to input
   for (uint8_t i = 0; i < n; ++i) {
-    this->inputs[i] = expo(this->model->expo[i], this->inputs[i]);
+    this->inputs[i] = expo(this->model->expo[i], inputs[i]);
   }
+
+  // apply trim
+  add(this->inputs, this->inputs, this->trim, n);
 
   // process the mix
   mix(this->model->transform, this->inputs, this->channels, n, m);
