@@ -5,7 +5,7 @@
 #include "Radio.h"
 #include "Battery.h"
 
-#define NUM_MODELS 4
+#define NUM_MODELS 5
 
 // reta
 class ModelRegistry {
@@ -105,6 +105,25 @@ class ModelRegistry {
         4,
         4,
         3
+      },
+      {
+        "alula",
+        expo,
+#ifdef ENABLE_DUAL_RATES
+        drLow,
+        drHigh,
+#endif
+#ifdef ENABLE_ALARM
+        minVolts,
+        minSignals,
+#endif
+        (float*)elevon,
+        channels,
+        input,
+        trim,
+        2,
+        4,
+        4
       }
     };
 

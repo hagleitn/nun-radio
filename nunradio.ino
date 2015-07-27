@@ -133,6 +133,11 @@ void handleButtons(float *inputs) {
       } else if (inputs[controller.getMode() ? 0 : 3] < -0.7) {
 	lastM = currentTime;
 	store.save(registry.current());
+      } else if (inputs[controller.getMode() ? 0 : 3] > 0.7) {
+#ifdef ENABLE_DUAL_RATES
+	// lastM = currentTime; don't set min delay for rates
+	radio.toggleRates();
+#endif
       }
     }
   }

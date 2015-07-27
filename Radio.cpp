@@ -68,12 +68,12 @@ void Radio::setTrim(float *trim, uint8_t n) {
 }
 
 #ifdef ENABLE_DUAL_RATES
-void Radio::setLowRates() {
-  this->lowRates = true;
+void Radio::toggleRates() {
+  this->lowRates != this->lowRates;
 }
 
-void Radio::setHighRates() {
-  this->lowRates = false;
+bool Radio::isLowRates() {
+  return this->lowRates;
 }
 #endif
 

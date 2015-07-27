@@ -10,14 +10,14 @@ void Controller::normalize(float *x, uint8_t n) {
 void Controller::setInputs() {
   chuck.update();
   if (mode2) {
-    inputs[0] = chuck.readJoyX()/100.0;
+    inputs[0] = chuck.readJoyX()/(MAX_JOY/2.0);
     inputs[1] = -(chuck.readPitch()/90.0 - 1) * 2;
-    inputs[2] = chuck.readJoyY()/100.0;
+    inputs[2] = chuck.readJoyY()/(MAX_JOY/2.0);
     inputs[3] = chuck.readRoll()/90.0 * 2;
   } else {
-    inputs[3] = chuck.readJoyX()/100.0;
+    inputs[3] = chuck.readJoyX()/(MAX_JOY/2.0);
     inputs[2] = -(chuck.readPitch()/90.0 - 1) * 2;
-    inputs[1] = chuck.readJoyY()/100.0;
+    inputs[1] = chuck.readJoyY()/(MAX_JOY/2.0);
     inputs[0] = chuck.readRoll()/90.0 * 2;
   }
   normalize(inputs, 4);

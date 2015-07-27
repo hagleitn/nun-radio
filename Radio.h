@@ -54,8 +54,8 @@ class Radio {
   void setTrim(float *trim, uint8_t n);
 
 #ifdef ENABLE_DUAL_RATES
-  void setLowRates();
-  void setHighRates();
+  void toggleRates();
+  bool isLowRates();
 #endif
 
  private:

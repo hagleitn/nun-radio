@@ -27,8 +27,8 @@
 #define ZEROZ 460
 #define RADIUS 210  // probably pretty universal
 
-#define DEFAULT_ZERO_JOY_X 124
-#define DEFAULT_ZERO_JOY_Y 132
+#define DEFAULT_ZERO_JOY_X 127
+#define DEFAULT_ZERO_JOY_Y 127
 
 #define MAX_JOY 255
 #define MAX_ANGLE 1023
