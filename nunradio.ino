@@ -147,7 +147,7 @@ void handleButtons(float *inputs) {
   }
 
   if (controller.cPressed()) {
-    radio.setTrim(inputs, registry.current()->numInputs);
+    radio.setTrim(radio.getInputs(), registry.current()->numInputs);
   }
 }
 

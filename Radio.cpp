@@ -57,6 +57,10 @@ float *Radio::getChannels() {
   return this->channels;
 }
 
+float *Radio::getInputs() {
+  return this->inputs;
+}
+
 float *Radio::getTrim() {
   return this->trim;
 }

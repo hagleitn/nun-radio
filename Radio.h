@@ -49,6 +49,7 @@ class Radio {
   void begin();
   void setModel(Model *m);
   void update(float *inputs);
+  float *getInputs();
   float *getChannels();
   float *getTrim();
   void setTrim(float *trim, uint8_t n);
