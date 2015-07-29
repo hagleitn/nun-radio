@@ -15,12 +15,28 @@ class Controller {
 
   bool mode2 = true;
 
+  int minPitch;
+  int maxPitch;
+  int minRoll;
+  int maxRoll;
+  int minX;
+  int maxX;
+  int minY;
+  int maxY;
+  int zeroPitch;
+  int zeroRoll;
+  int zeroX;
+  int zeroY;
+
   float inputs[4] = {};
 
  private:
-  void normalize(float *x, uint8_t n);
+  float normalize(int x, int zero, int min, int max);
   void setInputs();
   void handleButtons(unsigned long currentTime);
+#ifdef ENABLE_CALIBRATION
+  void calibrate();
+#endif
 
  public:
 
@@ -36,13 +52,20 @@ class Controller {
 };
 
 inline Controller::Controller() :
-		  zPressed_(false), cPressed_(false),
-		  bothPressed_(false), lastZ(0),
-		  lastC(0), mode2(true) {}
+                  zPressed_(false), cPressed_(false),
+                  bothPressed_(false), lastZ(0),
+                  lastC(0), mode2(true), minPitch(45),
+                  maxPitch(135), minRoll(-45), maxRoll(45),
+                  minX(-127), maxX(128), minY(-127), maxY(128),
+                  zeroPitch(90), zeroRoll(0), zeroX(0), zeroY(0)
+{}
 
 inline void Controller::begin() {
   chuck.begin();
   chuck.update();
+#ifdef ENABLE_CALIBRATION
+  calibrate();
+#endif
 }
 
 inline void Controller::update(unsigned long currentTime) {

@@ -1,28 +1,59 @@
 #include "Controller.h"
 
-void Controller::normalize(float *x, uint8_t n) {
-  for (uint8_t i = 0; i < n; ++i) {
-    if (x[i] > 1) x[i] = 1;
-    if (x[i] < -1) x[i] = -1;
-  }
+float Controller::normalize(int x, int zero, int min, int max) {
+  if (min == max) return min;
+
+  float val = (x - zero) / ((max - min)/2.0);
+  if (val > 1) val = 1;
+  if (val < -1) val = -1;
+  return val;
 }
 
 void Controller::setInputs() {
   chuck.update();
-  if (mode2) {
-    inputs[0] = chuck.readJoyX()/(MAX_JOY/2.0);
-    inputs[1] = -(chuck.readPitch()/90.0 - 1) * 2;
-    inputs[2] = chuck.readJoyY()/(MAX_JOY/2.0);
-    inputs[3] = chuck.readRoll()/90.0 * 2;
-  } else {
-    inputs[3] = chuck.readJoyX()/(MAX_JOY/2.0);
-    inputs[2] = -(chuck.readPitch()/90.0 - 1) * 2;
-    inputs[1] = chuck.readJoyY()/(MAX_JOY/2.0);
-    inputs[0] = chuck.readRoll()/90.0 * 2;
+
+  inputs[0] = normalize(chuck.readJoyX(), zeroX, minX, maxX);
+  inputs[1] = -normalize(chuck.readPitch(), zeroPitch, minPitch, maxPitch);
+  inputs[2] = normalize(chuck.readJoyY(), zeroY, minY, maxY);
+  inputs[3] = normalize(chuck.readRoll(), zeroRoll, minRoll, maxRoll);
+
+  if (!mode2) {
+    float t = inputs[3];
+
+    inputs[3] = inputs[0];
+    inputs[0] = t;
+
+    t = inputs[2];
+    inputs[2] = inputs[1];
+    inputs[1] = t;
   }
-  normalize(inputs, 4);
 }
 
+#ifdef ENABLE_CALIBRATION
+void Controller::calibrate() {
+  do {
+    delay(10);
+    chuck.update();
+    zeroX = chuck.readJoyX();
+    zeroY = chuck.readJoyY();
+    zeroPitch = chuck.readPitch();
+    zeroRoll = chuck.readRoll();
+  } while (!chuck.cPressed());
+
+  do {
+    delay(10);
+    chuck.update();
+    minPitch = min(chuck.readPitch(), minPitch);
+    maxPitch = max(chuck.readPitch(), maxPitch);
+    minRoll = min(chuck.readRoll(), minRoll);
+    maxRoll = max(chuck.readRoll(), maxRoll);
+    minX = min(chuck.readJoyX(), minX);
+    maxX = max(chuck.readJoyX(), maxX);
+    minY = min(chuck.readJoyY(), minY);
+    maxY = max(chuck.readJoyY(), maxY);
+  } while (!chuck.cPressed());
+}
+#endif
 
 void Controller::handleButtons(unsigned long currentTime) {
 
