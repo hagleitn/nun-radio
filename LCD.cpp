@@ -82,10 +82,10 @@ void LCD::updateInputs() {
   
 #else
   uint8_t width = (display.width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
-  uint8_t height = (display.height() - 24)/2;
+  uint8_t height = display.height() - 24;
 
   for (uint8_t i = 0; i < numInputs; ++i) {
-    uint8_t amp = (inputs[i]+MAX_LEVEL)*height / (MAX_LEVEL - MIN_LEVEL) + 1;
+    uint8_t amp = ((inputs[i]+MAX_LEVEL) / 8) * height / ((MAX_LEVEL - MIN_LEVEL) / 8) + 1;
     display.fillRect(i*SPACE+i*width, display.height() - amp, width, amp, 1);
   }
 #endif
@@ -93,11 +93,11 @@ void LCD::updateInputs() {
 
 void LCD::updateChannels() {
   uint8_t width = (display.width()/2 - (numChannels - 1) * SPACE - SEPARATOR) / numChannels;
-  uint8_t height = (display.height() - 24)/2;
+  uint8_t height = display.height() - 24;
   uint8_t offset = display.width()/2 + SEPARATOR;
 
   for (uint8_t i = 0; i < numChannels; ++i) {
-    uint8_t amp = (channels[i]+MAX_LEVEL)*height / (MAX_LEVEL - MIN_LEVEL) + 1;
+    uint8_t amp = ((channels[i]+MAX_LEVEL) / 8 ) * height / ((MAX_LEVEL - MIN_LEVEL) / 8) + 1;
     display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
   }
 }
