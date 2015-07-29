@@ -5,31 +5,11 @@
 
 #include "Arduino.h"
 #include "RCEncoder.h"
-#include <math.h>
+#include "Model.h"
 
 #define MIN_SERVO_PULSE 1000
 #define MAX_SERVO_PULSE 2000
 #define RANGE (MAX_SERVO_PULSE - MIN_SERVO_PULSE)
-
-typedef struct model_ {
-  char const *name;
-  float *expo;
-#ifdef ENABLE_DUAL_RATES
-  float *drLow;
-  float *drHigh;
-#endif
-#ifdef ENABLE_ALARM
-  uint8_t *minVolts;
-  uint8_t *minSignals;
-#endif
-  float *transform;
-  float *channels;
-  float *inputs;
-  float *trim;
-  uint8_t numChannels;
-  uint8_t numInputs;
-  uint8_t id;
-} Model;
 
 class Radio {
 

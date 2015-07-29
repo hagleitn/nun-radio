@@ -2,7 +2,7 @@
 #define ModelRegistry_h
 
 #include "Arduino.h"
-#include "Radio.h"
+#include "Model.h"
 #include "Battery.h"
 
 #define NUM_MODELS 5
