@@ -36,8 +36,8 @@ unsigned int counter = 0;
 uint8_t volts[3] = {};
 uint8_t signals[1] = {};
 
-void setModel(Model*, float*);
-void handleButtons(float *);
+void setModel(Model*, int16_t*);
+void handleButtons(int16_t *);
 
 #define DELAY 10
 #define ITERATIONS(ms) ((ms) / DELAY)
@@ -121,7 +121,7 @@ void loop() {
   ++counter;
 }
 
-void handleButtons(float *inputs) {
+void handleButtons(int16_t *inputs) {
   if (controller.bothPressed()) {
     if (currentTime - lastM > 500) {
       if (inputs[controller.getMode() ? 2 : 1] < -0.7) {
@@ -151,7 +151,7 @@ void handleButtons(float *inputs) {
   }
 }
 
-void setModel(Model *m, float *inputs) {
+void setModel(Model *m, int16_t *inputs) {
   store.load(m);
 
   radio.setModel(m);

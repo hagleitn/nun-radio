@@ -1,5 +1,11 @@
 #include "LCD.h"
 
+#include "Model.h"
+
+#ifdef DEBUG
+#define DEBUG_PRINT_INPUTS 1
+#endif
+
 void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t b) {
 #ifdef DEBUG
   display.print(v);
@@ -9,12 +15,11 @@ void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, u
   display.print(max);
   display.println("v");
 #else
-  float level = (v - min) / ((float) (max - min));
-  if (level > 1) level = 1;
-  if (level < 0) level = 0;
+  if (v > max) v == max;
+  if (v < min) v == min;
   display.fillRect(x,y,w,h,WHITE);
   display.fillRect(x+b, y+b, w-2*b, h-2*b, BLACK);
-  display.fillRect(x+b+1, y+b+1, (w-2*b-2) * level, h-2*b-2, WHITE);
+  display.fillRect(x+b+1, y+b+1, ((w-2*b-2) * (v-min)) / (max - min), h-2*b-2, WHITE);
 #endif
   display.setCursor(x+w+5, y+2);
 }
@@ -27,11 +32,10 @@ void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, 
   display.print(" ");
   display.println(max);
 #else
-  float level = (v - min) / ((float) (max - min));
+  if (v > max) v == max;
+  if (v < min) v == min;
 
-  if (level > 1) level = 1;
-  if (level < 0) level = 0;
-  uint8_t numBars = (uint8_t) (level * 6 + 0.5);
+  uint8_t numBars = (uint8_t) ((v - min) * 6 / (max - min) + 0.5);
   uint8_t heightIncrement = h / 5;
   uint8_t barWidth = w/5 - b;
 
@@ -71,13 +75,20 @@ void LCD::updateHeaders() {
 }
 
 void LCD::updateInputs() {
+#ifdef DEBUG_PRINT_INPUTS
+  for (uint8_t i = 0; i < numInputs; ++i) {
+    display.println(inputs[i]);
+  }
+  
+#else
   uint8_t width = (display.width()/2 - (numInputs - 1) * SPACE - SEPARATOR) / numInputs;
   uint8_t height = (display.height() - 24)/2;
 
   for (uint8_t i = 0; i < numInputs; ++i) {
-    uint8_t amp = (inputs[i]+1)*height +1;
+    uint8_t amp = (inputs[i]+MAX_LEVEL)*height / (MAX_LEVEL - MIN_LEVEL) + 1;
     display.fillRect(i*SPACE+i*width, display.height() - amp, width, amp, 1);
   }
+#endif
 }
 
 void LCD::updateChannels() {
@@ -86,7 +97,7 @@ void LCD::updateChannels() {
   uint8_t offset = display.width()/2 + SEPARATOR;
 
   for (uint8_t i = 0; i < numChannels; ++i) {
-    uint8_t amp = (channels[i]+1)*height +1;
+    uint8_t amp = (channels[i]+MAX_LEVEL)*height / (MAX_LEVEL - MIN_LEVEL) + 1;
     display.fillRect(offset + i*SPACE + i*width, display.height() - amp, width, amp, 1);
   }
 }
@@ -104,12 +115,12 @@ void LCD::setModelName(char const *name) {
   }
 }
 
-void LCD::setInputs(float *inputs, uint8_t n) {
+void LCD::setInputs(int16_t *inputs, uint8_t n) {
   this->inputs = inputs;
   this->numInputs = n;
 }
 
-void LCD::setChannels(float *channels, uint8_t n) {
+void LCD::setChannels(int16_t *channels, uint8_t n) {
   this->channels = channels;
   this->numChannels = n;
 }

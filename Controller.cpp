@@ -1,11 +1,12 @@
 #include "Controller.h"
+#include "Model.h"
 
-float Controller::normalize(int x, int zero, int min, int max) {
+int16_t Controller::normalize(int x, int zero, int min, int max) {
   if (min == max) return min;
 
-  float val = (x - zero) / ((max - min)/2.0);
-  if (val > 1) val = 1;
-  if (val < -1) val = -1;
+  int16_t val = (((x - zero) * ((MAX_LEVEL - MIN_LEVEL)/4)) / (max - min)) * 4;
+  if (val > MAX_LEVEL) val = MAX_LEVEL;
+  if (val < MIN_LEVEL) val = MIN_LEVEL;
   return val;
 }
 
@@ -18,7 +19,7 @@ void Controller::setInputs() {
   inputs[3] = normalize(chuck.readRoll(), zeroRoll, minRoll, maxRoll);
 
   if (!mode2) {
-    float t = inputs[3];
+    int16_t t = inputs[3];
 
     inputs[3] = inputs[0];
     inputs[0] = t;
@@ -39,6 +40,11 @@ void Controller::calibrate() {
     zeroPitch = chuck.readPitch();
     zeroRoll = chuck.readRoll();
   } while (!chuck.cPressed());
+
+  minPitch = maxPitch = zeroPitch;
+  minRoll = maxRoll = zeroRoll;
+  minX = maxX = zeroX;
+  minY = maxY = zeroY;
 
   do {
     delay(10);

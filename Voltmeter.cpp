@@ -9,10 +9,14 @@ void Voltmeter::begin() {
 
 void Voltmeter::update() {
   long value = analogRead(pin);
-  float vout = (value * 5) / 1024.0;
-  float vin = vout /  (r2 / ((float)(r1 + r2)));
-  if (vin<0.09) {
-    vin=0.0;
-  }
-  this->vin = VOLTS_TO_BYTE(vin);
+  // float vout = (value * 5) / 1024.0;
+  // float vin = vout /  (r2 / ((float)(r1 + r2)));
+  // if (vin<0.09) {
+  //   vin=0.0;
+  // }
+  // this->vin = VOLTS_TO_BYTE(vin);
+  this->vin = COMPUTE_VOLTS(value, r1, r2);
+  // ((value * 5) / 1024) / (r2 / (r1+r2)) * 1000 / 52
+  // ((value * 5) * (r1 + r2)) / (1024 * r2)
+  // ((value * 5) * (r1 + r2))  / (r2 * 52)
 }

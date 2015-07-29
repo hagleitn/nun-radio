@@ -28,10 +28,10 @@ class Controller {
   int zeroX;
   int zeroY;
 
-  float inputs[4] = {};
+  int16_t inputs[4] = {};
 
  private:
-  float normalize(int x, int zero, int min, int max);
+  int16_t normalize(int x, int zero, int min, int max);
   void setInputs();
   void handleButtons(unsigned long currentTime);
 #ifdef ENABLE_CALIBRATION
@@ -43,7 +43,7 @@ class Controller {
   inline Controller();
   inline void begin();
   inline void update(unsigned long currentTime);
-  inline float *getInputs();
+  inline int16_t *getInputs();
   inline bool cPressed();
   inline bool zPressed();
   inline void setMode(bool mode2);
@@ -73,7 +73,7 @@ inline void Controller::update(unsigned long currentTime) {
   handleButtons(currentTime);
 }
 
-inline float *Controller::getInputs() {
+inline int16_t *Controller::getInputs() {
   return inputs;
 }
 

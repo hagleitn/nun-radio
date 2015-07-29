@@ -15,9 +15,9 @@ class Radio {
 
  private:
   Model *model;
-  float *inputs;
-  float *channels;
-  float *trim;
+  int16_t *inputs;
+  int16_t *channels;
+  int16_t *trim;
 #ifdef ENABLE_DUAL_RATES
   bool lowRates;
 #endif
@@ -28,11 +28,11 @@ class Radio {
   Radio(uint8_t pin);
   void begin();
   void setModel(Model *m);
-  void update(float *inputs);
-  float *getInputs();
-  float *getChannels();
-  float *getTrim();
-  void setTrim(float *inputs, uint8_t n);
+  void update(int *inputs);
+  int16_t *getInputs();
+  int16_t *getChannels();
+  int16_t *getTrim();
+  void setTrim(int16_t *inputs, uint8_t n);
 
 #ifdef ENABLE_DUAL_RATES
   void toggleRates();
@@ -41,41 +41,42 @@ class Radio {
 
  private:
 
-  float toServo(float *input);
-  inline float expo(float a, float x);
-  void mix(float *transform, float *inputs, float *channels, uint8_t n, uint8_t m);
-  inline void init(float *x, uint8_t n, float c);
-  inline void add(float *y, float *x1, float *x2, uint8_t n);
-  inline void scale(float *y, float *x, uint8_t scale, uint8_t n);
-  inline void mult(float *y, float *x1, float *x2, uint8_t n);
+  int16_t toServo(int16_t *input);
+  inline int16_t expo(int8_t a, int32_t x);
+  void mix(int8_t *transform, int16_t *inputs, int16_t *channels, uint8_t n, uint8_t m);
+  inline void init(int16_t *x, uint8_t n, int16_t c);
+  inline void add(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n);
+  inline void scale(int16_t *y, int16_t *x, uint8_t scale, uint8_t n);
+  inline void mult(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n);
 };
 
 // y = a*x^3+(1-a)x, a .. expo (0 >= a >= 1), x .. input (-1 <= x <= 1)
-inline float Radio::expo(float a, float x) {
-  return a*x*x*x+(1-a)*x;
+inline int16_t Radio::expo(int8_t a, int32_t x) {
+  return (int16_t)(((BYTE_TO_PERCENT(a) * x * x) / 100) * x) / MAX_LEVEL / MAX_LEVEL
+    + ((100-BYTE_TO_PERCENT(a)) * x) / 100;
 }
 
-inline void Radio::init(float *x, uint8_t n, float c) {
+inline void Radio::init(int16_t *x, uint8_t n, int16_t c) {
   for (uint8_t i = 0; i < n; ++i) {
     x[i] = c;
   }
 }
 
-inline void Radio::add(float *y, float *x1, float *x2, uint8_t n) {
+inline void Radio::add(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
     y[i] = x1[i] + x2[i];
   }
 }
 
-inline void Radio::scale(float *y, float *x, uint8_t scale, uint8_t n) {
+inline void Radio::scale(int16_t *y, int16_t *x, uint8_t scale, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
     y[i] = scale * x[i];
   }
 }
 
-inline void Radio::mult(float *y, float *x1, float *x2, uint8_t n) {
+inline void Radio::mult(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
-    y[i] = x1[i] * x2[i];
+    y[i] = MULT(x1[i], x2[i]);
   }
 }
 #endif

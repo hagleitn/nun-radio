@@ -8,7 +8,7 @@
 typedef struct record_ {
   uint8_t crc;
   uint8_t id;
-  float values[4];
+  uint16_t values[4];
 } record;
 
 class PermanentStore {

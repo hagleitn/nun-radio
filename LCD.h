@@ -22,8 +22,8 @@ class LCD {
   uint8_t a1;
   uint8_t a2;
   char modelName[LENGTH_NAME+1] = {};
-  float *inputs;
-  float *channels;
+  int16_t *inputs;
+  int16_t *channels;
   uint8_t numInputs;
   uint8_t numChannels;
   bool telemetryAvailable;
@@ -48,8 +48,8 @@ class LCD {
   inline void setA1(uint8_t a1);
   inline void setA2(uint8_t a2);
   void setModelName(char const *name);
-  void setInputs(float *inputs, uint8_t n);
-  void setChannels(float *channels, uint8_t n);
+  void setInputs(int16_t *inputs, uint8_t n);
+  void setChannels(int16_t *channels, uint8_t n);
   void update();
 };
 

@@ -11,21 +11,107 @@
 class ModelRegistry {
  private:
 
-  float elevon[2][4] = {{0,0.5,0,-0.5},{0,-0.5,0,-0.5}};
-  float full[4][4] = {{0,0,0,1},{0,0,0,1},{0,1,0,0},{-1,0,0,0}};
-  float reta[4][4] = {{1,0,0,0}, {0,-1,0,0}, {0,0,2,0}, {0,0,0,1}};
-  float input[4] = {};
-  float channels[4] = {};
-  float trim[4] = {};
-  float expo[4] = {0.4,0.4,0.4,0.4};
+  int8_t elevon[2][4] = {
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(50),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(-50)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(-50),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(-50)
+    }
+  };
+
+  int8_t full[4][4] = {
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(100)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(100)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(100),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0)
+    },
+    {
+      PERCENT_TO_BYTE(-100),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0)
+    }
+  };
+
+  int8_t reta[4][4] = {
+    {
+      PERCENT_TO_BYTE(100),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(-100),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(200),
+      PERCENT_TO_BYTE(0)
+    },
+    {
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(0),
+      PERCENT_TO_BYTE(100)
+    }
+  };
+
+  int16_t input[4] = {};
+  int16_t channels[4] = {};
+  int16_t trim[4] = {};
+
+  int8_t expo[4] = {
+    PERCENT_TO_BYTE(40),
+    PERCENT_TO_BYTE(40),
+    PERCENT_TO_BYTE(40),
+    PERCENT_TO_BYTE(40)
+  };
+
 #ifdef ENABLE_DUAL_RATES
-  float drLow[4] = {0.8,0.8,0.8,0.8};
-  float drHigh[4] = {1,1,1,1};
+  int8_t drLow[4] = {
+    PERCENT_TO_BYTE(80),
+    PERCENT_TO_BYTE(80),
+    PERCENT_TO_BYTE(80),
+    PERCENT_TO_BYTE(80)
+  };
+
+  int8_t drHigh[4] = {
+    PERCENT_TO_BYTE(100),
+    PERCENT_TO_BYTE(100),
+    PERCENT_TO_BYTE(100),
+    PERCENT_TO_BYTE(100)
+  };
 #endif
+
 #ifdef ENABLE_ALARM
   uint8_t minVolts[3] = {VOLTS_TO_BYTE(WARN_VOLTS_LIPO(2)), VOLTS_TO_BYTE(WARN_VOLTS_NIMH(4)), 0xFF};
   uint8_t minSignals[1] = {20};
 #endif
+
   uint8_t current_;
 
   Model models[NUM_MODELS] =
@@ -41,7 +127,7 @@ class ModelRegistry {
         minVolts,
         minSignals,
 #endif
-        (float*)elevon,
+        (int8_t*)elevon,
         channels,
         input,
         trim,
@@ -60,7 +146,7 @@ class ModelRegistry {
         minVolts,
         minSignals,
 #endif
-        (float*)elevon,
+        (int8_t*)elevon,
         channels,
         input,
         trim,
@@ -79,7 +165,7 @@ class ModelRegistry {
         minVolts,
         minSignals,
 #endif
-        (float*)full,
+        (int8_t*)full,
         channels,
         input,
         trim,
@@ -98,7 +184,7 @@ class ModelRegistry {
         minVolts,
         minSignals,
 #endif
-        (float*)reta,
+        (int8_t*)reta,
         channels,
         input,
         trim,
@@ -117,7 +203,7 @@ class ModelRegistry {
         minVolts,
         minSignals,
 #endif
-        (float*)elevon,
+        (int8_t*)elevon,
         channels,
         input,
         trim,

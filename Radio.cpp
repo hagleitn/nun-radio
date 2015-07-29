@@ -26,7 +26,7 @@ void Radio::setModel(Model *m) {
 #endif
 }
 
-void Radio::update(float *inputs) {
+void Radio::update(int16_t *inputs) {
 
   uint8_t n = this->model->numInputs;
   uint8_t m = this->model->numChannels;
@@ -53,19 +53,19 @@ void Radio::update(float *inputs) {
   }
 }
 
-float *Radio::getChannels() {
+int16_t *Radio::getChannels() {
   return this->channels;
 }
 
-float *Radio::getInputs() {
+int16_t *Radio::getInputs() {
   return this->inputs;
 }
 
-float *Radio::getTrim() {
+int16_t *Radio::getTrim() {
   return this->trim;
 }
 
-void Radio::setTrim(float *inputs, uint8_t n) {
+void Radio::setTrim(int16_t *inputs, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
     this->trim[i] += expo(this->model->expo[i], inputs[i]);
   }
@@ -81,29 +81,29 @@ bool Radio::isLowRates() {
 }
 #endif
 
-float Radio::toServo(float *input) {
+int16_t Radio::toServo(int16_t *input) {
 
-  if (*input > 1) {
-    *input = 1;
-  } else if (*input < -1) {
-    *input = -1;
+  if (*input > MAX_LEVEL) {
+    *input = MAX_LEVEL;
+  } else if (*input < -MIN_LEVEL) {
+    *input = -MIN_LEVEL;
   }
 
-  float val = MIN_SERVO_PULSE + (1 + *input) * RANGE / 2.0;
+  int16_t val = MIN_SERVO_PULSE + (MAX_LEVEL + *input); // goes to 2024
   return val;
 }
 
 /**
  * mix is matrix multiplication:  channel = transform * inputs
  * transform nxm matrix
- * inputs n float values coming from the controler
+ * inputs n int16_t values coming from the controler
  * channels m outputs
  */
-void Radio::mix(float *transform, float *inputs, float *channels, uint8_t n, uint8_t m) {
+void Radio::mix(int8_t *transform, int16_t *inputs, int16_t *channels, uint8_t n, uint8_t m) {
   init(channels, m, 0);
   for (uint8_t j = 0; j < m; ++j)  {
     for (uint8_t i = 0; i < n; ++i) {
-      channels[j] = channels[j] + inputs[i] * transform[i+j*n];
+      channels[j] = channels[j] + MULT(inputs[i], transform[i+j*n]);
     }
   }
 }
