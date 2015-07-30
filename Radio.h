@@ -5,8 +5,8 @@
 #include "RCEncoder.h"
 #include "Model.h"
 
-#define MIN_SERVO_PULSE 1000
-#define MAX_SERVO_PULSE 2000
+#define MIN_SERVO_PULSE 800
+#define MAX_SERVO_PULSE 1800
 #define RANGE (MAX_SERVO_PULSE - MIN_SERVO_PULSE)
 
 class Radio {
