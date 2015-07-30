@@ -45,6 +45,7 @@ class Radio {
  private:
 
   int16_t toServo(int16_t *input);
+  inline int16_t norm(int16_t val);
   inline int16_t expo(int8_t a, int32_t x);
   void mix(int8_t *transform, int16_t *inputs, int16_t *channels, uint8_t n, uint8_t m);
   inline void init(int16_t *x, uint8_t n, int16_t c);
@@ -52,6 +53,12 @@ class Radio {
   inline void scale(int16_t *y, int16_t *x, uint8_t scale, uint8_t n);
   inline void mult(int16_t *y, int16_t *x1, int8_t *x2, uint8_t n);
 };
+
+inline int16_t Radio::norm(int16_t v) {
+  if (v > MAX_LEVEL) return MAX_LEVEL;
+  if (v < MIN_LEVEL) return MIN_LEVEL;
+  return v;
+}
 
 // y = a*x^3+(1-a)x, a .. expo (0 >= a >= 1), x .. input (-1 <= x <= 1)
 inline int16_t Radio::expo(int8_t a, int32_t x) {
@@ -67,9 +74,7 @@ inline void Radio::init(int16_t *x, uint8_t n, int16_t c) {
 
 inline void Radio::add(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
-    y[i] = x1[i] + x2[i];
-    if (y[i] > MAX_LEVEL) y[i] = MAX_LEVEL;
-    if (y[i] < MIN_LEVEL) y[i] = MIN_LEVEL;
+    y[i] = norm(x1[i] + x2[i]);
   }
 }
 

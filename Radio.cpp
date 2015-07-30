@@ -92,14 +92,7 @@ bool Radio::isLowRates() {
 #endif
 
 int16_t Radio::toServo(int16_t *input) {
-
-  if (*input > MAX_LEVEL) {
-    *input = MAX_LEVEL;
-  } else if (*input < MIN_LEVEL) {
-    *input = MIN_LEVEL;
-  }
-
-  return MIN_SERVO_PULSE + (MAX_LEVEL + *input); // goes to 2024
+  return MIN_SERVO_PULSE + (MAX_LEVEL + norm(*input)) - 12;
 }
 
 /**
@@ -112,7 +105,7 @@ void Radio::mix(int8_t *transform, int16_t *inputs, int16_t *channels, uint8_t n
   init(channels, m, 0);
   for (uint8_t j = 0; j < m; ++j)  {
     for (uint8_t i = 0; i < n; ++i) {
-      channels[j] = channels[j] + MULT(inputs[i], transform[i+j*n]);
+      channels[j] = norm(channels[j] + MULT(inputs[i], transform[i+j*n]));
     }
   }
 }
