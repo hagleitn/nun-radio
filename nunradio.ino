@@ -42,6 +42,8 @@ void handleButtons(int16_t *);
 #define DELAY 10
 #define ITERATIONS(ms) ((ms) / DELAY)
 
+#define THRESHOLD (MAX_LEVEL * 7 / 10)
+
 void setup() {
 
   // wait for things to stabilize
@@ -124,16 +126,16 @@ void loop() {
 void handleButtons(int16_t *inputs) {
   if (controller.bothPressed()) {
     if (currentTime - lastM > 500) {
-      if (inputs[controller.getMode() ? 2 : 1] < -0.7) {
+      if (inputs[controller.getMode() ? 2 : 1] < -THRESHOLD) {
         lastM = currentTime;
         setModel(registry.next(), inputs);
-      } else if (inputs[controller.getMode() ? 2 : 1] > 0.7) {
+      } else if (inputs[controller.getMode() ? 2 : 1] > THRESHOLD) {
         lastM = currentTime;
         setModel(registry.previous(), inputs);
-      } else if (inputs[controller.getMode() ? 0 : 3] < -0.7) {
+      } else if (inputs[controller.getMode() ? 0 : 3] < -THRESHOLD) {
 	lastM = currentTime;
 	store.save(registry.current());
-      } else if (inputs[controller.getMode() ? 0 : 3] > 0.7) {
+      } else if (inputs[controller.getMode() ? 0 : 3] > THRESHOLD) {
 #ifdef ENABLE_DUAL_RATES
 	// lastM = currentTime; don't set min delay for rates
 	radio.toggleRates();

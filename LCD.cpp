@@ -15,8 +15,8 @@ void LCD::drawVolts(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, u
   display.print(max);
   display.println("v");
 #else
-  if (v > max) v == max;
-  if (v < min) v == min;
+  if (v > max) v = max;
+  if (v < min) v = min;
   display.fillRect(x,y,w,h,WHITE);
   display.fillRect(x+b, y+b, w-2*b, h-2*b, BLACK);
   display.fillRect(x+b+1, y+b+1, ((w-2*b-2) * (v-min)) / (max - min), h-2*b-2, WHITE);
@@ -32,8 +32,8 @@ void LCD::drawSignal(uint8_t v, uint8_t max, uint8_t min, uint8_t x, uint8_t y, 
   display.print(" ");
   display.println(max);
 #else
-  if (v > max) v == max;
-  if (v < min) v == min;
+  if (v > max) v = max;
+  if (v < min) v = min;
 
   uint8_t numBars = (uint8_t) ((v - min) * 6 / (max - min) + 0.5);
   uint8_t heightIncrement = h / 5;

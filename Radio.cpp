@@ -89,8 +89,7 @@ int16_t Radio::toServo(int16_t *input) {
     *input = MIN_LEVEL;
   }
 
-  int16_t val = MIN_SERVO_PULSE + (MAX_LEVEL + *input); // goes to 2024
-  return val;
+  return MIN_SERVO_PULSE + (MAX_LEVEL + *input); // goes to 2024
 }
 
 /**

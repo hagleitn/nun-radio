@@ -65,6 +65,8 @@ inline void Radio::init(int16_t *x, uint8_t n, int16_t c) {
 inline void Radio::add(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
     y[i] = x1[i] + x2[i];
+    if (y[i] > MAX_LEVEL) y[i] = MAX_LEVEL;
+    if (y[i] < MIN_LEVEL) y[i] = MIN_LEVEL;
   }
 }
 

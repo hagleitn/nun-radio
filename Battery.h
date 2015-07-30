@@ -30,7 +30,7 @@
 #define VOLTS_TO_BYTE(v) ((uint8_t) ((v) * 1000 / 52.0))
 #define BYTE_TO_VOLTS(v) ((v) * 52 / 1000.0)
 
-#define COMPUTE_VOLTS(v, r1, r2) ((uint8_t)((((v) * 5l * (r1+r2)) / r2) / 52))
+#define COMPUTE_VOLTS(v, r1, r2) ((uint8_t)((((v) * 5 * (r1+r2)) / r2) / 52))
 //#define COMPUTE_VOLTS(v, r1, r2) ((uint8_t)((v) * 1126))
 
 #endif
