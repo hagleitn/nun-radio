@@ -31,7 +31,7 @@ void Controller::setInputs() {
 }
 
 #ifdef ENABLE_CALIBRATION
-void Controller::calibrate() {
+void Controller::calibrateZero() {
   do {
     delay(10);
     chuck.update();
@@ -45,7 +45,9 @@ void Controller::calibrate() {
   minRoll = maxRoll = zeroRoll;
   minX = maxX = zeroX;
   minY = maxY = zeroY;
+}
 
+void Controller::calibrateMax() {
   do {
     delay(10);
     chuck.update();

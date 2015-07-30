@@ -50,6 +50,10 @@ class LCD {
   void setModelName(char const *name);
   void setInputs(int16_t *inputs, uint8_t n);
   void setChannels(int16_t *channels, uint8_t n);
+#ifdef ENABLE_CALIBRATION
+  void displayZeroCalibrationScreen();
+  void displayMaxCalibrationScreen();
+#endif
   void update();
 };
 

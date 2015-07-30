@@ -135,6 +135,30 @@ void LCD::setChannels(int16_t *channels, uint8_t n) {
   this->numChannels = n;
 }
 
+#ifdef ENABLE_CALIBRATION
+void LCD::displayZeroCalibrationScreen(){
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.setTextSize(1);
+
+  display.println("Calibration");
+  display.println();
+  display.println("Please center all axis and press C");
+  display.display();
+}
+
+void LCD::displayMaxCalibrationScreen() {
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.setTextSize(1);
+
+  display.println("Calibration");
+  display.println();
+  display.println("Please move all axis to max and min and press C");
+  display.display();
+}
+#endif
+
 void LCD::update() {
   display.clearDisplay();
   display.setCursor(0,0);

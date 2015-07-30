@@ -16,7 +16,4 @@ void Voltmeter::update() {
   // }
   // this->vin = VOLTS_TO_BYTE(vin);
   this->vin = COMPUTE_VOLTS(value, r1, r2);
-  // ((value * 5) / 1024) / (r2 / (r1+r2)) * 1000 / 52
-  // ((value * 5) * (r1 + r2)) / (1024 * r2)
-  // ((value * 5) * (r1 + r2))  / (r2 * 52)
 }

@@ -1,14 +1,23 @@
 #include "Radio.h"
 
-Radio::Radio(uint8_t pin) : pin(pin)
+#define LOW_FREQ (220)
+#define HIGH_FREQ (880)
+#define BUZZ_DURATION (500)
+
+Radio::Radio(uint8_t radioPin
 #ifdef ENABLE_DUAL_RATES
-			  , lowRates(false)
+	     , uint8_t buzzPin
+#endif
+	     ) : radioPin(radioPin)
+#ifdef ENABLE_DUAL_RATES
+             , buzzPin(buzzPin)
+             , lowRates(false)
 #endif
 {}
 
 void Radio::begin() {
-  pinMode(pin, OUTPUT);
-  encoderBegin(pin);
+  pinMode(radioPin, OUTPUT);
+  encoderBegin(radioPin);
 }
 
 void Radio::setModel(Model *m) {
@@ -73,7 +82,8 @@ void Radio::setTrim(int16_t *inputs, uint8_t n) {
 
 #ifdef ENABLE_DUAL_RATES
 void Radio::toggleRates() {
-  this->lowRates != this->lowRates;
+  this->lowRates = !this->lowRates;
+  tone(buzzPin, lowRates ? LOW_FREQ : HIGH_FREQ, BUZZ_DURATION);
 }
 
 bool Radio::isLowRates() {
@@ -106,4 +116,3 @@ void Radio::mix(int8_t *transform, int16_t *inputs, int16_t *channels, uint8_t n
     }
   }
 }
-

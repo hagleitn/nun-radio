@@ -34,9 +34,6 @@ class Controller {
   int16_t normalize(int x, int zero, int min, int max);
   void setInputs();
   void handleButtons(unsigned long currentTime);
-#ifdef ENABLE_CALIBRATION
-  void calibrate();
-#endif
 
  public:
 
@@ -49,6 +46,10 @@ class Controller {
   inline void setMode(bool mode2);
   inline bool getMode();
   inline bool bothPressed();
+#ifdef ENABLE_CALIBRATION
+  void calibrateZero();
+  void calibrateMax();
+#endif
 };
 
 inline Controller::Controller() :
@@ -63,9 +64,6 @@ inline Controller::Controller() :
 inline void Controller::begin() {
   chuck.begin();
   chuck.update();
-#ifdef ENABLE_CALIBRATION
-  calibrate();
-#endif
 }
 
 inline void Controller::update(unsigned long currentTime) {

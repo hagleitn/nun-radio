@@ -22,7 +22,11 @@ Alarm alarm(13);
 
 Controller controller;
 
+#ifdef ENABLE_DUAL_RATES
+Radio radio(5, 13);
+#else
 Radio radio(5);
+#endif
 
 LCD lcd;
 ModelRegistry registry;
@@ -133,12 +137,18 @@ void handleButtons(int16_t *inputs) {
         lastM = currentTime;
         setModel(registry.previous(), inputs);
       } else if (inputs[controller.getMode() ? 0 : 3] < -THRESHOLD) {
-	lastM = currentTime;
-	store.save(registry.current());
+        lastM = currentTime;
+        store.save(registry.current());
       } else if (inputs[controller.getMode() ? 0 : 3] > THRESHOLD) {
+#ifdef ENABLE_CALIBRATION
+	lcd.displayZeroCalibrationScreen();
+	controller.calibrateZero();
+	lcd.displayMaxCalibrationScreen();
+	controller.calibrateMax();
+#endif
+      } else {
 #ifdef ENABLE_DUAL_RATES
-	// lastM = currentTime; don't set min delay for rates
-	radio.toggleRates();
+        radio.toggleRates();
 #endif
       }
     }

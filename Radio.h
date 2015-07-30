@@ -1,8 +1,6 @@
 #ifndef Radio_h
 #define Radio_h
 
-//#define ENABLE_DUAL_RATES
-
 #include "Arduino.h"
 #include "RCEncoder.h"
 #include "Model.h"
@@ -20,12 +18,17 @@ class Radio {
   int16_t *trim;
 #ifdef ENABLE_DUAL_RATES
   bool lowRates;
+  uint8_t buzzPin;
 #endif
-  uint8_t pin;
+  uint8_t radioPin;
 
  public:
 
-  Radio(uint8_t pin);
+  Radio(uint8_t radioPin
+#ifdef ENABLE_DUAL_RATES
+	, uint8_t buzzPin
+#endif
+	);
   void begin();
   void setModel(Model *m);
   void update(int *inputs);
@@ -47,7 +50,7 @@ class Radio {
   inline void init(int16_t *x, uint8_t n, int16_t c);
   inline void add(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n);
   inline void scale(int16_t *y, int16_t *x, uint8_t scale, uint8_t n);
-  inline void mult(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n);
+  inline void mult(int16_t *y, int16_t *x1, int8_t *x2, uint8_t n);
 };
 
 // y = a*x^3+(1-a)x, a .. expo (0 >= a >= 1), x .. input (-1 <= x <= 1)
@@ -76,7 +79,7 @@ inline void Radio::scale(int16_t *y, int16_t *x, uint8_t scale, uint8_t n) {
   }
 }
 
-inline void Radio::mult(int16_t *y, int16_t *x1, int16_t *x2, uint8_t n) {
+inline void Radio::mult(int16_t *y, int16_t *x1, int8_t *x2, uint8_t n) {
   for (uint8_t i = 0; i < n; ++i) {
     y[i] = MULT(x1[i], x2[i]);
   }
