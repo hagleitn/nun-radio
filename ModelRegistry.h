@@ -14,15 +14,15 @@ class ModelRegistry {
   int8_t elevon[2][4] = {
     {
       PERCENT_TO_BYTE(0),
-      PERCENT_TO_BYTE(50),
+      PERCENT_TO_BYTE(70),
       PERCENT_TO_BYTE(0),
-      PERCENT_TO_BYTE(-50)
+      PERCENT_TO_BYTE(-70)
     },
     {
       PERCENT_TO_BYTE(0),
-      PERCENT_TO_BYTE(-50),
+      PERCENT_TO_BYTE(-70),
       PERCENT_TO_BYTE(0),
-      PERCENT_TO_BYTE(-50)
+      PERCENT_TO_BYTE(-70)
     }
   };
 

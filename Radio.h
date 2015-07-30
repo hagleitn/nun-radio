@@ -52,8 +52,8 @@ class Radio {
 
 // y = a*x^3+(1-a)x, a .. expo (0 >= a >= 1), x .. input (-1 <= x <= 1)
 inline int16_t Radio::expo(int8_t a, int32_t x) {
-  return (int16_t)(((BYTE_TO_PERCENT(a) * x * x) / 100) * x) / MAX_LEVEL / MAX_LEVEL
-    + ((100-BYTE_TO_PERCENT(a)) * x) / 100;
+  return (((BYTE_TO_PERCENT(a) * x  * x) / 100) * x) / (((int32_t)MAX_LEVEL) * MAX_LEVEL)
+    + (100 - BYTE_TO_PERCENT(a)) * x / 100;
 }
 
 inline void Radio::init(int16_t *x, uint8_t n, int16_t c) {
