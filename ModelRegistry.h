@@ -85,10 +85,10 @@ class ModelRegistry {
   int16_t trim[4] = {};
 
   int8_t expo[4] = {
-    PERCENT_TO_BYTE(40),
-    PERCENT_TO_BYTE(40),
-    PERCENT_TO_BYTE(40),
-    PERCENT_TO_BYTE(40)
+    PERCENT_TO_BYTE(50),
+    PERCENT_TO_BYTE(50),
+    PERCENT_TO_BYTE(50),
+    PERCENT_TO_BYTE(50)
   };
 
 #ifdef ENABLE_DUAL_RATES

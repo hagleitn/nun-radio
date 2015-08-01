@@ -4,7 +4,7 @@
 int16_t Controller::normalize(int x, int zero, int min, int max) {
   if (min == max) return min;
 
-  int16_t val = (((x - zero) * ((MAX_LEVEL - MIN_LEVEL)/4)) / (max - min)) * 4;
+  int16_t val = (((x - zero) * ((MAX_LEVEL - MIN_LEVEL)/8)) / (max - min)) * 8;
   if (val > MAX_LEVEL) val = MAX_LEVEL;
   if (val < MIN_LEVEL) val = MIN_LEVEL;
   return val;
