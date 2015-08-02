@@ -58,13 +58,61 @@
 
 <p>By default tilt left/right controls roll. Tilt forward/backwards controls pitch. Joystick left/right is for rudder, up/down is for throttle.</p>
 
+<h4>
+<a id="mode-1mode-2-toggle" class="anchor" href="#mode-1mode-2-toggle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mode 1/Mode 2 toggle</h4>
+
 <p>You can also flip what joystick and tilt controls. That's achieved by hitting the Z button.</p>
 
+<h4>
+<a id="calibration" class="anchor" href="#calibration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Calibration</h4>
+
 <p>Calibration can be entered by moving the joystick full right and hitting both C and Z buttons at the same time. The screen will show instructions on how to perform the calibration.</p>
+
+<h4>
+<a id="trim" class="anchor" href="#trim" aria-hidden="true"><span class="octicon octicon-link"></span></a>Trim</h4>
 
 <p>Trim can be set by holding a certain position on the joystick and with tilt and hitting the C button. The current position will immediately become the new center. Trim can be performed any number of time, each time the "new" center will be relative to the "current" center. This way you can trim each axis one by one.</p>
 
 <p>Saving the current trim is done by holding the joystick full left and hitting both C and Z.</p>
+
+<h4>
+<a id="model-selection" class="anchor" href="#model-selection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Selection</h4>
+
+<p>You can choose pre-programmed models by holding the joystick full up or down and hitting both C and Z. This will page through all available models.</p>
+
+<h4>
+<a id="model-creation" class="anchor" href="#model-creation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Creation</h4>
+
+<p>Models are created in the code. ModelRegistry.h has all the models. The important bits of model creation are:</p>
+
+<ul>
+<li>Model name</li>
+<li>Number of inputs used</li>
+<li>Number of channels used</li>
+<li>Expo for each channel (Percentage, 0% is no expo)</li>
+<li>Low and high rates for each channel</li>
+<li>Mix matrix (see below)</li>
+</ul>
+
+<h4>
+<a id="mix" class="anchor" href="#mix" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mix</h4>
+
+<p>Channel mixing is achieved by setting up the mix matrix. If you configured n inputs and m channels to be used, the mix matrix is a nxm matrix that will be multiplied to the input vector to produce the channel outputs.</p>
+
+<p>So if I is your input vector (by default (rudder, elevator, throttle, aileron)) and A a 2 x 4 matrix: A*I will be what's sent to the model.</p>
+
+<h6>
+<a id="example-elevon-mixing" class="anchor" href="#example-elevon-mixing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: "elevon mixing"</h6>
+
+<p>Let's say you have a 2 channel model with elevon. You've configured 4 inputs and 2 channels. The matrix you want to use is this:</p>
+
+<pre><code>((0 1 0  1)
+ (0 1 0 -1))
+</code></pre>
+
+<p>That will add up aileron and elevator for channel 1 and add up the inverse of the aileron and elevator for channel two.</p>
+
+<p>(The actual values for the matrix are given as "PERCENT_TO_BYTE(x)" where x is the percentage of the input value you want to take. This is done for code size reasons.)</p>
 
 <h3>
 <a id="lots-of-borrowed-code" class="anchor" href="#lots-of-borrowed-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lots of 'borrowed' code:</h3>
