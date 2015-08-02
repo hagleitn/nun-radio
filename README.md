@@ -128,7 +128,22 @@ Any 2 position switch to turn the radio on and off. I'm using [this latching but
 
 You'll also need to wire all this stuff together. Breadboard, prototype boards, soldering wires. There's plenty of options.
 
-### Lots of 'borrowed' code:
+### Wiring
+
+Below is how you wire the radio. 
+
+* Battery goes through switch to VIN on the Arduino. GND needs to be connected to Batter ground. Speaker, MAX3232, Telemetry, nunchuck, screen take 5V, the transmitter takes direct input from the batter. The battery in the picture is 3.7V but should read 7.4V (2S Lipo)
+* Both screen and wii nunchuck are I2C devices. They need to be connected to the respective I2C ports on the Arduino. 
+* There's a 100k/10k pair of resistors connected to Analog port 0. That's used to read the battery voltage.
+* The speaker is connected to digital pin 13. That means on board LED and Speaker are coupled. That can be annoying when uploading new code. You might want to use a different pin.
+* The FrSky DHT's PPM port is connected to digital pin 5. The transmitting side will take the battery voltage.
+* The FrSky Telemetry ports have to receive 5V input. The TX port on the FrSky needs to be routed through the MAX3232 to the RX port of the arduino.
+
+![](https://github.com/hagleitn/nun-radio/blob/master/schematic.png?raw=true)
+
+### Acknowledgements
+
+Lots of 'borrowed' code in this project. Here's where the pieces are from:
 
    * RCEncoder was lifted from the forums: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214 
    * Adafruit_* code is form here: https://github.com/adafruit (both the graphics and the ssd1306)
