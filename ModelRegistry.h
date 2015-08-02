@@ -69,7 +69,7 @@ class ModelRegistry {
     {
       PERCENT_TO_BYTE(0),
       PERCENT_TO_BYTE(0),
-      PERCENT_TO_BYTE(200),
+      PERCENT_TO_BYTE(199),
       PERCENT_TO_BYTE(0)
     },
     {

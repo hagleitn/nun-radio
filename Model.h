@@ -3,13 +3,14 @@
 
 #include "Arduino.h"
 
-#define PERCENT_TO_BYTE(P) ((int8_t)((((int)P) * 64) / 100))
-#define BYTE_TO_PERCENT(P) ((int8_t)((((int)P) * 100) / 64))
+#define DIVISOR_PERCENTS (32)
+#define PERCENT_TO_BYTE(P) ((int8_t)((((int)P) * DIVISOR_PERCENTS) / 100))
+#define BYTE_TO_PERCENT(P) ((int8_t)((((int)P) * 100) / DIVISOR_PERCENTS))
 
 #define MAX_LEVEL 512
 #define MIN_LEVEL -512
 
-#define MULT(A, B) ((A) * (B) / 64)
+#define MULT(A, B) ((A) * (B) / DIVISOR_PERCENTS)
 
 typedef struct model_ {
   char const *name;

@@ -13,7 +13,7 @@ extern "C"{
 #define ledTest1 8
 #define ledTest2 9
 
-#define NBR_OF_CHANNELS  4
+#define NBR_OF_CHANNELS  5
 #define MIN_CHANNEL_PULSE 800  // 1ms
 #define MID_CHANNEL_PULSE 1300  // 1.5ms
 #define MAX_CHANNEL_PULSE 1800  // 2 ms
