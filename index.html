@@ -204,6 +204,22 @@
 <p><img src="https://github.com/hagleitn/nun-radio/blob/master/schematic.png?raw=true" alt=""></p>
 
 <h3>
+<a id="build-and-upload-the-code" class="anchor" href="#build-and-upload-the-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build and upload the code</h3>
+
+<p>The build is done via: <a href="https://github.com/sudar/Arduino-Makefile">https://github.com/sudar/Arduino-Makefile</a></p>
+
+<p>You'll need to head over there to get the setup instructions. Please note: I had to use the older Arduino 1.0.5 to make the Makefile works. This might change in future.</p>
+
+<p>You'll have to go through the Makefile and adjust it to your environment. There's paths for AVR, where you checked out the code, you need to choose the right board you're using etc.</p>
+
+<p>After that, you just need to plug in your arduino and run:</p>
+
+<pre><code>make upload
+</code></pre>
+
+<p>And voila. The radio is working.</p>
+
+<h3>
 <a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h3>
 
 <p>Lots of 'borrowed' code in this project. Here's where the pieces are from:</p>
@@ -214,8 +230,6 @@
 <li>WiiChuck from the playground: <a href="http://playground.arduino.cc/Main/WiiChuckClass">http://playground.arduino.cc/Main/WiiChuckClass</a>
 </li>
 </ul>
-
-<p>Build via: <a href="https://github.com/sudar/Arduino-Makefile">https://github.com/sudar/Arduino-Makefile</a></p>
       </section>
     </div>
 
