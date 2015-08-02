@@ -76,6 +76,11 @@
 <p>Saving the current trim is done by holding the joystick full left and hitting both C and Z.</p>
 
 <h4>
+<a id="dual-rates" class="anchor" href="#dual-rates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dual rates</h4>
+
+<p>You can switch between high and low rates by pressing both Z and C button simultaneously in flight while the stick is not at an extreme (e.g.: center position). A high pitched tone will indicate high rates are active, a low pitched tone indicates the low rates are active.</p>
+
+<h4>
 <a id="model-selection" class="anchor" href="#model-selection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model Selection</h4>
 
 <p>You can choose pre-programmed models by holding the joystick full up or down and hitting both C and Z. This will page through all available models.</p>
@@ -101,10 +106,10 @@
 
 <p>So if I is your input vector (by default (rudder, elevator, throttle, aileron)) and A a 2 x 4 matrix: A*I will be what's sent to the model.</p>
 
-<h6>
-<a id="example-elevon-mixing" class="anchor" href="#example-elevon-mixing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: "elevon mixing"</h6>
+<h5>
+<a id="example-elevon-mixing" class="anchor" href="#example-elevon-mixing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: "elevon mixing"</h5>
 
-<p>Let's say you have a 2 channel model with elevon. You've configured 4 inputs and 2 channels. The matrix you want to use is this:</p>
+<p>Let's say you have a 2 channel model with elevons. You've configured 4 inputs and 2 channels. The matrix you want to use is this:</p>
 
 <pre><code>((0 1 0  1)
  (0 1 0 -1))
@@ -113,6 +118,32 @@
 <p>That will add up aileron and elevator for channel 1 and add up the inverse of the aileron and elevator for channel two.</p>
 
 <p>(The actual values for the matrix are given as "PERCENT_TO_BYTE(x)" where x is the percentage of the input value you want to take. This is done for code size reasons.)</p>
+
+<h5>
+<a id="example-2-aileron-elevator-rudder" class="anchor" href="#example-2-aileron-elevator-rudder" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example: "2 Aileron, Elevator, Rudder"</h5>
+
+<p>If you're glider has 4 channels: Two for ailerons, one elevator and one rudder, your matrix would likely look like:</p>
+
+<pre><code>((1 0 0  0)
+ (0 1 0  0)
+ (0 0 0  1)
+ (0 0 0 -1))
+</code></pre>
+
+<p>(Same comment about actual matrix values applies)</p>
+
+<h4>
+<a id="expo-and-dual-rates" class="anchor" href="#expo-and-dual-rates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Expo and dual rates</h4>
+
+<p>Expo is set as a percentage. If the expo percentage is "a" and the control input is "x" the formula used is:</p>
+
+<pre><code>(a/100) * x^3 + (1 - a/100) * x
+</code></pre>
+
+<p>High and low rates are applied as a last step before the channel values are sent to the servos. If "a" is the percentage of the high or low rate the formula is:</p>
+
+<pre><code>(a/100) * x
+</code></pre>
 
 <h3>
 <a id="bill-of-materials" class="anchor" href="#bill-of-materials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bill of materials</h3>
