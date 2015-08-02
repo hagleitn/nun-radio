@@ -141,6 +141,20 @@ Below is how you wire the radio.
 
 ![](https://github.com/hagleitn/nun-radio/blob/master/schematic.png?raw=true)
 
+### Build and upload the code
+
+The build is done via: https://github.com/sudar/Arduino-Makefile
+
+You'll need to head over there to get the setup instructions. Please note: I had to use the older Arduino 1.0.5 to make the Makefile works. This might change in future.
+
+You'll have to go through the Makefile and adjust it to your environment. There's paths for AVR, where you checked out the code, you need to choose the right board you're using etc.
+
+After that, you just need to plug in your arduino and run:
+
+    make upload
+
+And voila. The radio is working.
+
 ### Acknowledgements
 
 Lots of 'borrowed' code in this project. Here's where the pieces are from:
@@ -148,5 +162,3 @@ Lots of 'borrowed' code in this project. Here's where the pieces are from:
    * RCEncoder was lifted from the forums: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214 
    * Adafruit_* code is form here: https://github.com/adafruit (both the graphics and the ssd1306)
    * WiiChuck from the playground: http://playground.arduino.cc/Main/WiiChuckClass
-
-Build via: https://github.com/sudar/Arduino-Makefile
