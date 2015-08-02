@@ -111,8 +111,8 @@
 
 <p>Let's say you have a 2 channel model with elevons. You've configured 4 inputs and 2 channels. The matrix you want to use is this:</p>
 
-<pre><code>((0 1 0  1)
- (0 1 0 -1))
+<pre><code>0 1 0  1
+0 1 0 -1
 </code></pre>
 
 <p>That will add up aileron and elevator for channel 1 and add up the inverse of the aileron and elevator for channel two.</p>
@@ -124,10 +124,10 @@
 
 <p>If you're glider has 4 channels: Two for ailerons, one elevator and one rudder, your matrix would likely look like:</p>
 
-<pre><code>((1 0 0  0)
- (0 1 0  0)
- (0 0 0  1)
- (0 0 0 -1))
+<pre><code>1 0 0  0
+0 1 0  0
+0 0 0  1
+0 0 0 -1
 </code></pre>
 
 <p>(Same comment about actual matrix values applies)</p>
@@ -256,9 +256,9 @@
 <p>Lots of 'borrowed' code in this project. Here's where the pieces are from:</p>
 
 <ul>
-<li>RCEncoder was lifted from the forums: <a href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214">http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214</a> </li>
+<li>RCEncoder was lifted from the Arduino forums: <a href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214">http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214</a> </li>
 <li>Adafruit_* code is form here: <a href="https://github.com/adafruit">https://github.com/adafruit</a> (both the graphics and the ssd1306)</li>
-<li>WiiChuck from the playground: <a href="http://playground.arduino.cc/Main/WiiChuckClass">http://playground.arduino.cc/Main/WiiChuckClass</a>
+<li>WiiChuck from the Arduino playground: <a href="http://playground.arduino.cc/Main/WiiChuckClass">http://playground.arduino.cc/Main/WiiChuckClass</a>
 </li>
 </ul>
       </section>
