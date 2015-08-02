@@ -34,6 +34,10 @@ Trim can be set by holding a certain position on the joystick and with tilt and 
 
 Saving the current trim is done by holding the joystick full left and hitting both C and Z.
 
+#### Dual rates
+
+You can switch between high and low rates by pressing both Z and C button simultaneously in flight while the stick is not at an extreme (e.g.: center position). A high pitched tone will indicate high rates are active, a low pitched tone indicates the low rates are active.
+
 #### Model Selection
 
 You can choose pre-programmed models by holding the joystick full up or down and hitting both C and Z. This will page through all available models.
@@ -55,9 +59,9 @@ Channel mixing is achieved by setting up the mix matrix. If you configured n inp
 
 So if I is your input vector (by default (rudder, elevator, throttle, aileron)) and A a 2 x 4 matrix: A*I will be what's sent to the model.
 
-###### Example: "elevon mixing"
+##### Example: "elevon mixing"
 
-Let's say you have a 2 channel model with elevon. You've configured 4 inputs and 2 channels. The matrix you want to use is this:
+Let's say you have a 2 channel model with elevons. You've configured 4 inputs and 2 channels. The matrix you want to use is this:
 
     ((0 1 0  1)
      (0 1 0 -1))
@@ -65,6 +69,27 @@ Let's say you have a 2 channel model with elevon. You've configured 4 inputs and
 That will add up aileron and elevator for channel 1 and add up the inverse of the aileron and elevator for channel two.
 
 (The actual values for the matrix are given as "PERCENT_TO_BYTE(x)" where x is the percentage of the input value you want to take. This is done for code size reasons.)
+
+##### Example: "2 Aileron, Elevator, Rudder"
+
+If you're glider has 4 channels: Two for ailerons, one elevator and one rudder, your matrix would likely look like:
+
+    ((1 0 0  0)
+     (0 1 0  0)
+     (0 0 0  1)
+     (0 0 0 -1))
+
+(Same comment about actual matrix values applies)
+
+#### Expo and dual rates
+
+Expo is set as a percentage. If the expo percentage is "a" and the control input is "x" the formula used is:
+
+    (a/100) * x^3 + (1 - a/100) * x
+
+High and low rates are applied as a last step before the channel values are sent to the servos. If "a" is the percentage of the high or low rate the formula is:
+
+    (a/100) * x
 
 ### Bill of materials
 
