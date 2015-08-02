@@ -63,8 +63,8 @@ So if I is your input vector (by default (rudder, elevator, throttle, aileron)) 
 
 Let's say you have a 2 channel model with elevons. You've configured 4 inputs and 2 channels. The matrix you want to use is this:
 
-    ((0 1 0  1)
-     (0 1 0 -1))
+    0 1 0  1
+    0 1 0 -1
 
 That will add up aileron and elevator for channel 1 and add up the inverse of the aileron and elevator for channel two.
 
@@ -74,10 +74,10 @@ That will add up aileron and elevator for channel 1 and add up the inverse of th
 
 If you're glider has 4 channels: Two for ailerons, one elevator and one rudder, your matrix would likely look like:
 
-    ((1 0 0  0)
-     (0 1 0  0)
-     (0 0 0  1)
-     (0 0 0 -1))
+    1 0 0  0
+    0 1 0  0
+    0 0 0  1
+    0 0 0 -1
 
 (Same comment about actual matrix values applies)
 
@@ -121,7 +121,7 @@ The good folks at FrSky have a [radio module](http://www.alofthobbies.com/diy-te
 
 #### MAX3232
 
-This [little board](http://www.amazon.com/gp/product/B00G99KYPM) let's you read the telemetry output of the FrSky DHT DIY radio directly with the Arduino hardware serial port.
+This [little board](http://www.amazon.com/gp/product/B00G99KYPM) let's you read the telemetry output of the FrSky DHT DIY radio directly with the Arduino hardware serial port. It converts the RS232 signal to TTL (inverts levels, adjusts voltages).
 
 ![](http://ecx.images-amazon.com/images/I/51dT%2B2KFJwL.jpg)
 
@@ -184,6 +184,6 @@ And voila. The radio is working.
 
 Lots of 'borrowed' code in this project. Here's where the pieces are from:
 
-   * RCEncoder was lifted from the forums: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214 
+   * RCEncoder was lifted from the Arduino forums: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1243998214 
    * Adafruit_* code is form here: https://github.com/adafruit (both the graphics and the ssd1306)
-   * WiiChuck from the playground: http://playground.arduino.cc/Main/WiiChuckClass
+   * WiiChuck from the Arduino playground: http://playground.arduino.cc/Main/WiiChuckClass
