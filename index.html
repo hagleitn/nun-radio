@@ -115,6 +115,72 @@
 <p>(The actual values for the matrix are given as "PERCENT_TO_BYTE(x)" where x is the percentage of the input value you want to take. This is done for code size reasons.)</p>
 
 <h3>
+<a id="bill-of-materials" class="anchor" href="#bill-of-materials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bill of materials</h3>
+
+<p>You'll need the following things to build the radio.</p>
+
+<h4>
+<a id="nunchuck" class="anchor" href="#nunchuck" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nunchuck</h4>
+
+<p>The controller. I like the <a href="http://www.amazon.com/Nyko-Kama-Wii-Nintendo/dp/B001PAAE7I/ref=pd_sim_63_2?ie=UTF8&amp;refRID=0ZR64832BM0F8VYZ12J2">Nyko Kama for Wii</a>, but any <a href="http://www.ebay.com/itm/1Pc-New-White-Nunchuck-Video-Game-Controller-Remote-for-Nintendo-Wii-/271723442002?hash=item3f43faaf52">cheap Nunchuck</a> will work.</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/61qOBYjW1kL._SL1500_.jpg" alt=""></p>
+
+<h4>
+<a id="nunchuck-breakout-board" class="anchor" href="#nunchuck-breakout-board" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nunchuck breakout board</h4>
+
+<p>This <a href="https://www.sparkfun.com/products/9281">little board</a> let's you read your nunchuck from Arduino without having to destroy it. Just connect the nunchuck to the board and done.</p>
+
+<p><img src="https://cdn.sparkfun.com//assets/parts/2/7/8/2/09281-1.jpg" alt=""></p>
+
+<h4>
+<a id="arduino" class="anchor" href="#arduino" aria-hidden="true"><span class="octicon octicon-link"></span></a>Arduino</h4>
+
+<p>The heart of the radio. I'm using the <a href="https://www.arduino.cc/en/Main/arduinoBoardMicro">Arduino Micro</a>, but any Arduino will work (UNO, pro, etc). </p>
+
+<p><img src="https://www.arduino.cc/en/uploads/Main/ArduinoMicroFront_450px.jpg" alt=""></p>
+
+<h4>
+<a id="frsky-dht-diy-radio" class="anchor" href="#frsky-dht-diy-radio" aria-hidden="true"><span class="octicon octicon-link"></span></a>FrSky DHT DIY radio</h4>
+
+<p>The good folks at FrSky have a <a href="http://www.alofthobbies.com/diy-telemetry-module.html">radio module</a> that is perfect for projects like this. It's small cheap and let's you establish 2 way comm with any FrSky receiver. That means easy transmission of signal as well as reading of telemetry info via Arduino.</p>
+
+<p><img src="http://www.alofthobbies.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/d/h/dht_toggle-switch_1.jpg" alt=""></p>
+
+<h4>
+<a id="max3232" class="anchor" href="#max3232" aria-hidden="true"><span class="octicon octicon-link"></span></a>MAX3232</h4>
+
+<p>This <a href="http://www.amazon.com/gp/product/B00G99KYPM">little board</a> let's you read the telemetry output of the FrSky DHT DIY radio directly with the Arduino hardware serial port.</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/51dT%2B2KFJwL.jpg" alt=""></p>
+
+<h4>
+<a id="buzzer" class="anchor" href="#buzzer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Buzzer</h4>
+
+<p>Simple <a href="http://www.amazon.com/Arduino-Compatible-Speaker-arduino-sensors/dp/B0090X0634/ref=sr_1_2?ie=UTF8&amp;qid=1438497079">piezo speaker</a> to sound alerts for low radio battery, low airplane battery or low signal strength.</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/41Zo36kboSL.jpg" alt=""></p>
+
+<h4>
+<a id="screen" class="anchor" href="#screen" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screen</h4>
+
+<p>You'll need a <a href="http://www.amazon.com/Diymall-Yellow-Serial-Arduino-Display/dp/B00O2LLT30/ref=pd_sim_328_1?ie=UTF8&amp;refRID=1DSS8Y22CC0XMXV1CA3W">small screen</a> for model selection, visual telemetry, checking on battery, and visualizing input and output.</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/41vSEw5FNuL.jpg" alt=""></p>
+
+<h4>
+<a id="battery" class="anchor" href="#battery" aria-hidden="true"><span class="octicon octicon-link"></span></a>Battery</h4>
+
+<p>You need something to power the radio. I'm using a <a href="http://www.amazon.com/gp/product/B0027G874G">2S lipo</a>.</p>
+
+<p><img src="http://ecx.images-amazon.com/images/I/513A7TBhgHL.jpg" alt=""></p>
+
+<h4>
+<a id="the-rest" class="anchor" href="#the-rest" aria-hidden="true"><span class="octicon octicon-link"></span></a>The rest</h4>
+
+<p>You'll also need to wire all this stuff together. Breadboard, prototype boards, soldering wires. There's plenty of options.</p>
+
+<h3>
 <a id="lots-of-borrowed-code" class="anchor" href="#lots-of-borrowed-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lots of 'borrowed' code:</h3>
 
 <ul>
